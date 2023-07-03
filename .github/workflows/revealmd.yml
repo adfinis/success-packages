@@ -1,0 +1,26 @@
+--- 
+name: build and deploy revealmd presentation
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+      - name: install and build
+        run: |
+          npm update
+          npm install --include=optional --location=global reveal-md@5.3.4
+          for file in *.md ; do /usr/local/bin/reveal-md --static output/"${file%.*}" "${file}" ; done
+      - name: deploy
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: output
