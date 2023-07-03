@@ -164,10 +164,10 @@ Automatic joining is preferred over manual joining. It allows instance replaceme
 ```hcl
   storage "raft" {
   path    = "/vault/vault"
-  node_id = "vault_x"
+  node_id = "vault_UNIQUE_ID"
   retry_join {
     auto_join = "provider=aws addr_type=public_v4 tag_key=auto_join tag_value=my_raft_instances region=us-east-1"
-    auto_join_scheme = "http"
+    auto_join_scheme = "https"
   }
 }
 ```
@@ -219,7 +219,7 @@ Any Vault node or cluster needs to be initialized. Initializing created an encry
 
 Unseal/recovery keys can be PGP can be used to prevent plain-text (shared) keys to be displayed.
 
-It's adviced to carefully run this procedure. Although it's done once.
+It's adviced to carefully run this procedure.
 
 ----
 
