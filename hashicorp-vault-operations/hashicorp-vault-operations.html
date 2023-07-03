@@ -218,7 +218,7 @@ Manual unsealing requires unsealing as many times as the amount of `key-threshol
 
 This means at least 3 people need to enter an unseal key on **each Vault instance**. A typical installation of Vault has  10 to 20 nodes. That would mean 30 to 60 unseal commands.
 
-As you understand, manaul unsealing is not preferred.
+Manaul unsealing is not preferred.
 </script></section></section><section ><section data-markdown><script type="text/template">
 ## Unsealing
 
@@ -239,14 +239,16 @@ AWS KMS, Azure Key Vault and GCP Cloud KMS use a key on a cloud provider to unse
 ## Unsealing
 
 An HSM can be used to unseal Vault. This does introduce a dependency on an HSM, but greatly reduces the administrative work required for unsealing.
+</script></section><section data-markdown><script type="text/template">
+## Unsealing
 
 `Transit` can also be used to unseal Vault. This mechanism unseals Vault using another Vault. This means there is a dependency on that other Vault and the initial Vault needs to be unsealed as well, likely manual.
 </script></section></section><section ><section data-markdown><script type="text/template">
 ## Disaster Recovery
 
 Vault clusters (or instances) can be related in a "disaster recovery" replication setup.
-
-Disaster Recovery:
+</script></section><section data-markdown><script type="text/template">
+## Disaster Recovery
 
 - Syncronizes all data.
 - Has a primary and secondary
@@ -259,7 +261,7 @@ Disaster Recovery:
 The size of a "cluster" (`1`, `3` or `5`) has no impact on DR, you can mix any size.
 
 Disaster Recovery can also be used to migrate from one cluster to another.
-</script></section></section><section  data-markdown><script type="text/template">
+</script></section></section><section ><section data-markdown><script type="text/template">
 ## Performance Replication
 
 Vault clusters can syncronize (selected) data in a "performance replication" setup.
@@ -271,7 +273,13 @@ Performance Replication:
 - Secondary can be promoted.
 - Secondary does provide service.
 - Is an Enterprise feature.
-</script></section><section ><section data-markdown><script type="text/template">
+</script></section><section data-markdown><script type="text/template">
+## Performance Replication
+
+Disaster Recovery and Performance Replication can be combined.
+
+Disaster Recovery can (also) be used to migrate from one cluster to another.
+</script></section></section><section ><section data-markdown><script type="text/template">
 ## Architecture
 
 Here are a few architecture examples.
@@ -304,7 +312,7 @@ Here are a few architecture examples.
 
 ```text
                   +--- load balancer ---+
-                  |                     |
+                  | (or dynamic DNS)    |
                   +---------------------+
                     /                   \
                    /                     \
@@ -315,27 +323,6 @@ Here are a few architecture examples.
             V                                  V
 +--- Vault-cluster-1 ---+          +--- Vault-cluster-2 ---+
 |                       | -> DR -> |                       |
-+-----------------------+          +-----------------------+
-```
-
-- Connection quite forgiving.
-- Different regions.
-</script></section><section data-markdown><script type="text/template">
-## Architecture multiple clusters PR
-
-```text
-                  +--- load balancer ---+
-                  |                     |
-                  +---------------------+
-                    /                   \
-                   /                     \
-+---- load balancer ----+          +---- load balancer ----+
-|                       |          |                       |
-+-----------------------+          +-----------------------+
-            |                                  |
-            V                                  V
-+--- Vault-cluster-1 ---+          +--- Vault-cluster-2 ---+
-|                       | -> PR -> |                       |
 +-----------------------+          +-----------------------+
 ```
 
@@ -370,10 +357,12 @@ Here are a few architecture examples.
 </script></section><section data-markdown><script type="text/template">
 ## Architecture resolution
 
-If PR is used, a dynamic DNS record can be served, based on:
+A dynamic DNS record can be served, based on:
 
 - Originating IP address(es).
 - Health checks.
+
+Dynamic DNS is typically slower than a loadbalancer to fail over.
 </script></section></section><section  data-markdown><script type="text/template">
 ## Monitoring
 
@@ -385,24 +374,28 @@ If PR is used, a dynamic DNS record can be served, based on:
 
 Operational logs (`journalctl`) help understand the past and current state of Vault.
 
-Audit logs can be required and help determine usage of Vault.
+Audit logs can be required and help determine usage of Vault and may be required for compliance.
 </script></section><section data-markdown><script type="text/template">
 ## Logging
 
-Audit logs can be stored or sent to
+Audit logs can be stored or sent to one or more of:
 
 - Disk
 - Syslog
 - Socket
 
 <aside class="notes"><p>Audit logs need rotation.</p>
-</aside></script></section></section><section ><section data-markdown><script type="text/template">
+</aside></script></section><section data-markdown><script type="text/template">
+## Logging
+
+If no audit devices are available, Vault stops serving requests.
+</script></section></section><section ><section data-markdown><script type="text/template">
 ## Backup and restore
 
 This is your last resort and can be for forensics.
 
 - Backup is a snapshot of the data, not configuration.
-- A restore, restores **ALL** data, not per namespace of secret engine.
+- A restore, restores **ALL** data, not per namespace or secret engine.
 </script></section><section data-markdown><script type="text/template">
 ## Backup and restore
 
@@ -417,10 +410,12 @@ You can store to:
 
 Typically configured with `interval` and `retain`:
 
-- `interval`: `1h`, `retain`: `24` -> 24 hours of backups.
-- `interval`: `1d`, `retain`: `7` -> 7 days of backups.
-- `interval`: `1w`, `retain`: `4` -> 4 weeks of backups.
-- `interval`: `1m`, `retain`: `12` -> 12 months of backups.
+| interval | retain |
+|----------|--------|
+| 1h       | 24     |
+| 1d       | 7      |
+| 1w       | 4      |
+| 1m       | 12     |
 
 <aside class="notes"><p>Vault takes care of cleaning up old backups.</p>
 </aside></script></section></section><section  data-markdown><script type="text/template">
@@ -434,7 +429,7 @@ Typically configured with `interval` and `retain`:
 </script></section><section  data-markdown><script type="text/template">
 ## Questions?
 </script></section><section  data-markdown><script type="text/template">
-## Thanks!
+## Thanks
 </script></section></div>
     </div>
 
