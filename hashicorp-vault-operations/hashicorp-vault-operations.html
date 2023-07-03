@@ -137,7 +137,7 @@ Interesting to know:
 ## Clustering (HA)
 
 3. Both ports should be available to all members of a cluster.
-4. Port `:tcp/8200` uses `HTTPS`. The nodes should trust each others certificates. This is typically done by haveing a single certificate for all nodes, having either a wildcard (`*.examples.com`) or a specific Subject Alternate Name ("SAN"). For "SAN", node names need to be known.
+4. Port `:tcp/8200` uses `HTTPS`. The nodes should trust each others certificates. This is typically done by having a single certificate for all nodes, having either a wildcard (`*.examples.com`) or a specific Subject Alternate Name ("SAN"). For "SAN", node names need to be known.
 </script></section><section data-markdown><script type="text/template">
 ## Clustering (HA)
 
@@ -146,10 +146,10 @@ Automatic joining is preferred over manual joining. It allows instance replaceme
 ```hcl
   storage "raft" {
   path    = "/vault/vault"
-  node_id = "vault_x"
+  node_id = "vault_UNIQUE_ID"
   retry_join {
     auto_join = "provider=aws addr_type=public_v4 tag_key=auto_join tag_value=my_raft_instances region=us-east-1"
-    auto_join_scheme = "http"
+    auto_join_scheme = "https"
   }
 }
 ```
@@ -193,7 +193,7 @@ Any Vault node or cluster needs to be initialized. Initializing created an encry
 
 Unseal/recovery keys can be PGP can be used to prevent plain-text (shared) keys to be displayed.
 
-It's adviced to carefully run this procedure. Although it's done once.
+It's adviced to carefully run this procedure.
 </script></section><section data-markdown><script type="text/template">
 ## Initializing
 
