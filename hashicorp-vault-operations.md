@@ -250,7 +250,7 @@ Manual unsealing requires unsealing as many times as the amount of `key-threshol
 
 This means at least 3 people need to enter an unseal key on **each Vault instance**. A typical installation of Vault has  10 to 20 nodes. That would mean 30 to 60 unseal commands.
 
-As you understand, manaul unsealing is not preferred.
+Manaul unsealing is not preferred.
 
 ---
 
@@ -278,6 +278,10 @@ NOTE: You can unseal a non-cloud Vault instance using cloud keys.
 
 An HSM can be used to unseal Vault. This does introduce a dependency on an HSM, but greatly reduces the administrative work required for unsealing.
 
+----
+
+## Unsealing
+
 `Transit` can also be used to unseal Vault. This mechanism unseals Vault using another Vault. This means there is a dependency on that other Vault and the initial Vault needs to be unsealed as well, likely manual.
 
 ---
@@ -286,7 +290,9 @@ An HSM can be used to unseal Vault. This does introduce a dependency on an HSM, 
 
 Vault clusters (or instances) can be related in a "disaster recovery" replication setup.
 
-Disaster Recovery:
+----
+
+## Disaster Recovery
 
 - Syncronizes all data.
 - Has a primary and secondary
@@ -315,6 +321,14 @@ Performance Replication:
 - Secondary can be promoted.
 - Secondary does provide service.
 - Is an Enterprise feature.
+
+----
+
+## Performance Replication
+
+Disaster Recovery and Performance Replication can be combined.
+
+Disaster Recovery can (also) be used to migrate from one cluster to another.
 
 ---
 
@@ -356,7 +370,7 @@ Here are a few architecture examples.
 
 ```text
                   +--- load balancer ---+
-                  |                     |
+                  | (or dynamic DNS)    |
                   +---------------------+
                     /                   \
                    /                     \
@@ -367,29 +381,6 @@ Here are a few architecture examples.
             V                                  V
 +--- Vault-cluster-1 ---+          +--- Vault-cluster-2 ---+
 |                       | -> DR -> |                       |
-+-----------------------+          +-----------------------+
-```
-
-- Connection quite forgiving.
-- Different regions.
-
-----
-
-## Architecture multiple clusters PR
-
-```text
-                  +--- load balancer ---+
-                  |                     |
-                  +---------------------+
-                    /                   \
-                   /                     \
-+---- load balancer ----+          +---- load balancer ----+
-|                       |          |                       |
-+-----------------------+          +-----------------------+
-            |                                  |
-            V                                  V
-+--- Vault-cluster-1 ---+          +--- Vault-cluster-2 ---+
-|                       | -> PR -> |                       |
 +-----------------------+          +-----------------------+
 ```
 
@@ -428,10 +419,12 @@ Here are a few architecture examples.
 
 ## Architecture resolution
 
-If PR is used, a dynamic DNS record can be served, based on:
+A dynamic DNS record can be served, based on:
 
 - Originating IP address(es).
 - Health checks.
+
+Dynamic DNS is typically slower than a loadbalancer to fail over.
 
 ---
 
@@ -447,19 +440,25 @@ If PR is used, a dynamic DNS record can be served, based on:
 
 Operational logs (`journalctl`) help understand the past and current state of Vault.
 
-Audit logs can be required and help determine usage of Vault.
+Audit logs can be required and help determine usage of Vault and may be required for compliance.
 
 ----
 
 ## Logging
 
-Audit logs can be stored or sent to
+Audit logs can be stored or sent to one or more of:
 
 - Disk
 - Syslog
 - Socket
 
 NOTE: Audit logs need rotation.
+
+----
+
+## Logging
+
+If no audit devices are available, Vault stops serving requests.
 
 ---
 
@@ -468,7 +467,7 @@ NOTE: Audit logs need rotation.
 This is your last resort and can be for forensics.
 
 - Backup is a snapshot of the data, not configuration.
-- A restore, restores **ALL** data, not per namespace of secret engine.
+- A restore, restores **ALL** data, not per namespace or secret engine.
 
 ----
 
@@ -487,10 +486,12 @@ You can store to:
 
 Typically configured with `interval` and `retain`:
 
-- `interval`: `1h`, `retain`: `24` -> 24 hours of backups.
-- `interval`: `1d`, `retain`: `7` -> 7 days of backups.
-- `interval`: `1w`, `retain`: `4` -> 4 weeks of backups.
-- `interval`: `1m`, `retain`: `12` -> 12 months of backups.
+| interval | retain |
+|----------|--------|
+| 1h       | 24     |
+| 1d       | 7      |
+| 1w       | 4      |
+| 1m       | 12     |
 
 NOTE: Vault takes care of cleaning up old backups.
 
@@ -510,4 +511,4 @@ NOTE: Vault takes care of cleaning up old backups.
 
 ---
 
-## Thanks!
+## Thanks
