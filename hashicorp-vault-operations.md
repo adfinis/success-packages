@@ -153,7 +153,7 @@ Interesting to know:
 ## Clustering (HA)
 
 3. Both ports should be available to all members of a cluster.
-4. Port `:tcp/8200` uses `HTTPS`. The nodes should trust each others certificates. This is typically done by haveing a single certificate for all nodes, having either a wildcard (`*.examples.com`) or a specific Subject Alternate Name ("SAN"). For "SAN", node names need to be known.
+4. Port `:tcp/8200` uses `HTTPS`. The nodes should trust each others certificates. This is typically done by having a single certificate for all nodes, having either a wildcard (`*.examples.com`) or a specific Subject Alternate Name ("SAN"). For "SAN", node names need to be known.
 
 ----
 
