@@ -418,7 +418,18 @@ Typically configured with `interval` and `retain`:
 | 1m       | 12     |
 
 <aside class="notes"><p>Vault takes care of cleaning up old backups.</p>
-</aside></script></section></section><section  data-markdown><script type="text/template">
+</aside></script></section></section><section ><section data-markdown><script type="text/template">
+## Others
+
+Writing Standard Operational Procedures helps, for example:
+
+- Recovery of single node loss.
+- Recovery of quorum loss.
+- Recover of "region" failure.
+- Updating Vault.
+- Emergency sealing.
+- ...
+</script></section><section data-markdown><script type="text/template">
 ## Others
 
 - Configuring Vault (`audit`, `autopilot` and `snapshot`) using Terraform works perfectly.
@@ -426,8 +437,8 @@ Typically configured with `interval` and `retain`:
 - When using namespaces, who managed the root-namespace?
 - Client counting can be enabled.
 - Vault typically requires a small team to run.
-</script></section><section  data-markdown><script type="text/template">
-## Questions?
+</script></section></section><section  data-markdown><script type="text/template">
+## Questions
 </script></section><section  data-markdown><script type="text/template">
 ## Thanks
 </script></section></div>
