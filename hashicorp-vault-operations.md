@@ -499,6 +499,19 @@ NOTE: Vault takes care of cleaning up old backups.
 
 ## Others
 
+Writing Standard Operational Procedures helps, for example:
+
+- Recovery of single node loss.
+- Recovery of quorum loss.
+- Recover of "region" failure.
+- Updating Vault.
+- Emergency sealing.
+- ...
+
+----
+
+## Others
+
 - Configuring Vault (`audit`, `autopilot` and `snapshot`) using Terraform works perfectly.
 - Vault is a "cloud native" tool. You can (if desired) never login to the instance.
 - When using namespaces, who managed the root-namespace?
@@ -507,7 +520,7 @@ NOTE: Vault takes care of cleaning up old backups.
 
 ---
 
-## Questions?
+## Questions
 
 ---
 
