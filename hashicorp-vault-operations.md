@@ -7,7 +7,7 @@ title: Vault operations
 
 ---
 
-This presentation guides you through the usage of Vault.
+This presentation guides you through the Vault operations you may need to do to properly setup Vault.
 
 ---
 

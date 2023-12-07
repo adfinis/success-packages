@@ -1,13 +1,13 @@
 ---
-title: Vault operations
+title: Vault usage
 
 ---
 
-# Vault operations
+# Vault usage
 
 ---
 
-This presentation guides you through the Vault operations you may need to do to properly setup Vault.
+This presentation guides you through the usage of Vault.
 
 ---
 
