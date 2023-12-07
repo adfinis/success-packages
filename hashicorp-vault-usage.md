@@ -51,7 +51,7 @@ Mostly used for administration and debugging.
 
 ----
 
-## Vault CLI 2/4
+## Vault CLI 2/5
 
 ```text
 export VAULT_ADDR='http://127.0.0.1:8200'
@@ -59,7 +59,7 @@ export VAULT_ADDR='http://127.0.0.1:8200'
 
 ----
 
-## Vault CLI 3/4
+## Vault CLI 3/5
 
 ```text
 vault login
@@ -81,7 +81,7 @@ policies             ["root"]
 
 ----
 
-## Vault CLI 4/4
+## Vault CLI 4/5
 
 ```text
 vault secrets list
@@ -93,19 +93,56 @@ secret/       kv           kv_cbcf9046           key/value secret storage
 sys/          system       system_b6408332       system endpoints used for control, policy and debugging
 ```
 
+----
+
+## Vault CLI 5/5
+
+```shell
+vault kv get secret/my_secret
+==== Secret Path ====
+secret/data/my_secret
+
+======= Metadata =======
+Key                Value
+---                -----
+created_time       2023-12-07T09:03:27.87442Z
+custom_metadata    <nil>
+deletion_time      n/a
+destroyed          false
+version            1
+
+====== Data ======
+Key         Value
+---         -----
+password    mypassword
+username    myusername
+```
+
 ---
 
-## Vault UI 1/2
+## Vault UI 1/3
 
 Nice, but not all features are available.
 
 ----
 
-## Vault UI 2/2
+## Vault UI 2/3
 
-![The Vault UI](https://raw.githubusercontent.com/adfinis/success-packages/master/images/vault-ui.png)
+![The Vault UI dashboard](https://raw.githubusercontent.com/adfinis/success-packages/master/images/vault-ui-dashboard.png)
+
+----
+
+## Vault UI 3/3
+
+![The Vault UI exposing a KV](https://raw.githubusercontent.com/adfinis/success-packages/master/images/vault-ui-kv.png)
 
 ---
+
+## Vault API
+
+Well [documented](https://developer.hashicorp.com/vault/api-docs), and feature complete.
+
+----
 
 ## Vault API
 
