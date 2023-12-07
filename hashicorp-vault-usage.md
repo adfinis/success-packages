@@ -38,6 +38,13 @@ A tool to manage *secrets*, typically for *systems*.
 
 > Systems: An application like Tomcat, CI, k8s, etc.
 
+----
+
+## Join the experiment!
+
+- [Install Vault](https://developer.hashicorp.com/vault/docs/install).
+- [Start Vault](https://developer.hashicorp.com/vault/tutorials/getting-started/getting-started-dev-server).
+
 ---
 
 ## Ways to use Vault
@@ -77,7 +84,8 @@ Mostly used for administration, experimenting and debugging.
 ## Vault CLI 2/6
 
 ```text
-> export VAULT_ADDR='http://127.0.0.1:8200'
+> vault server -dev
+> export VAULT_ADDR="http://127.0.0.1:8200"
 ```
 
 ----
@@ -205,6 +213,14 @@ curl \
   "auth": null
 }
 ```
+
+---
+
+## Vault agent
+
+---
+
+## Vault SDK
 
 ---
 
