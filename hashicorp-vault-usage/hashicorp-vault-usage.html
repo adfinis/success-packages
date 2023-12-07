@@ -75,7 +75,7 @@ Mostly used for administration, experimenting and debugging.
 </script></section><section data-markdown><script type="text/template">
 ## Vault CLI 2/6
 
-```text
+```shell
 > vault server -dev
 > export VAULT_ADDR="http://127.0.0.1:8200"
 ```
@@ -115,7 +115,9 @@ sys/          system       system_b6408332       system endpoints used for contr
 ## Vault CLI 5/6
 
 ```shell
-> vault kv put -mount=secret my_secret username=myusername password=mypassword
+> vault kv put -mount=secret my_secret \
+  username=myusername \
+  password=mypassword
 ==== Secret Path ====
 secret/data/my_secret
 
@@ -133,24 +135,14 @@ version            1
 
 ```shell
 > vault kv get secret/my_secret
-==== Secret Path ====
-secret/data/my_secret
-
-======= Metadata =======
-Key                Value
----                -----
-created_time       2023-12-07T09:03:27.87442Z
-custom_metadata    <nil>
-deletion_time      n/a
-destroyed          false
-version            1
-
 ====== Data ======
 Key         Value
 ---         -----
 password    mypassword
 username    myusername
 ```
+
+> YAML `vault kv get --field=data --format=yaml secret/my_secret`
 </script></section></section><section ><section data-markdown><script type="text/template">
 ## Vault API 1/3
 
