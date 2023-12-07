@@ -26,7 +26,8 @@ This presentation guides you through the Vault operations you may need to do to 
 - Who am I?
 - Who/what is Adfinis?
 - Who are you?
-</script></section><section ><section data-markdown><script type="text/template">## Topics
+</script></section><section ><section data-markdown><script type="text/template">
+## Topics
 
 - Installing
 - Updating
@@ -45,7 +46,7 @@ This presentation guides you through the Vault operations you may need to do to 
 - Backup and restore
 - Others
 </script></section></section><section ><section data-markdown><script type="text/template">
-## Installing
+## Installing 1/4
 
 Vault is a single binary in a couple of version.
 
@@ -55,7 +56,7 @@ Vault is a single binary in a couple of version.
 - Enterprise FIPS
 - Enterprise FIPS + HSM
 </script></section><section data-markdown><script type="text/template">
-## Installing
+## Installing 2/4
 
 There are binaries available for many platforms:
 
@@ -69,7 +70,7 @@ There are binaries available for many platforms:
 
 Supported architectures: `arm`, `arm64`, `386` and `amd64` .
 </script></section><section data-markdown><script type="text/template">
-## Installing
+## Installing 3/4
 
 When using a binary, there are a few thinks that need to be done to a system:
 
@@ -79,7 +80,7 @@ When using a binary, there are a few thinks that need to be done to a system:
 - Create a user
 - Create a startup method (SystemV or systemd)
 </script></section><section data-markdown><script type="text/template">
-## Installing
+## Installing 4/4
 
 Rather than a binary, a package can also be installed:
 
@@ -88,13 +89,13 @@ Rather than a binary, a package can also be installed:
 
 More [detail](https://www.hashicorp.com/blog/announcing-the-hashicorp-linux-repository).
 </script></section></section><section ><section data-markdown><script type="text/template">
-## Updating
+## Updating 1/4
 
 Every 2 weeks a new version is [released](https://releases.hashicorp.com/vault/).
 
 Some updates contain security fixes and may require a quick installation.
 </script></section><section data-markdown><script type="text/template">
-## Updating
+## Updating 2/3
 
 Simply replace the binary or package. To prevent unnecessary outages, use this order:
 
@@ -105,19 +106,19 @@ Simply replace the binary or package. To prevent unnecessary outages, use this o
 
 <aside class="notes"><p>You can technically update in any order, but may experience minor outages when a new leader is elected.</p>
 </aside></script></section><section data-markdown><script type="text/template">
-## Updating
+## Updating 3/3
 
 As updating is required somewhat frequently, is specific and critical; automating this using for example Ansible will prove valuable.
 
 <aside class="notes"><p>Please have a non-production environment prepared to exercise the update.</p>
 </aside></script></section></section><section ><section data-markdown><script type="text/template">
-## Clustering (HA)
+## Clustering (HA) 1/6
 
 You can create a cluster of Vault instances, which can offer redundancy.
 
 <aside class="notes"><p>Vault write actions will always be handled by the leader, to performance is not typically improved by more than one machine.</p>
 </aside></script></section><section data-markdown><script type="text/template">
-## Clustering (HA)
+## Clustering (HA) 2/6
 
 You can manually create a cluster:
 
@@ -127,19 +128,19 @@ vault operator raft join http://127.0.0.2:8200
 
 <aside class="notes"><p>Automatic joining is preferred to reduce administrative burden.</p>
 </aside></script></section><section data-markdown><script type="text/template">
-## Clustering (HA)
+## Clustering (HA) 3/6
 
 Interesting to know:
 
 1. When a Vault instance joins a cluster, a "bootstrap" sequence is started. This happens on port `:tcp/8200` (by default)
 2. Cluster communication will happen on port `:tcp:8201` (by default).
 </script></section><section data-markdown><script type="text/template">
-## Clustering (HA)
+## Clustering (HA) 4/6
 
 3. Both ports should be available to all members of a cluster.
 4. Port `:tcp/8200` uses `HTTPS`. The nodes should trust each others certificates. This is typically done by having a single certificate for all nodes, having either a wildcard (`*.examples.com`) or a specific Subject Alternate Name ("SAN"). For "SAN", node names need to be known.
 </script></section><section data-markdown><script type="text/template">
-## Clustering (HA)
+## Clustering (HA) 5/6
 
 Automatic joining is preferred over manual joining. It allows instance replacements to occur without human intervention.
 
@@ -154,7 +155,7 @@ Automatic joining is preferred over manual joining. It allows instance replaceme
 }
 ```
 </script></section><section data-markdown><script type="text/template">
-## Clustering (HA)
+## Clustering (HA) 6/6
 
 Automatically joining uses [`go discovery`](https://github.com/hashicorp/go-discover), which has many "providers", including:
 
@@ -164,7 +165,7 @@ Automatically joining uses [`go discovery`](https://github.com/hashicorp/go-disc
 
 <aside class="notes"><p>&quot;auto join&quot; and &quot;auto unseal&quot; are often confused. They are different concepts.</p>
 </aside></script></section></section><section ><section data-markdown><script type="text/template">
-## Scaling
+## Scaling 1/2
 
 Vault can be scaled. This is done for availability, not for performance.
 
@@ -174,7 +175,7 @@ You can scale both up and down, from `3` to `5` and back from `5` to `3`.
 
 <aside class="notes"><p>Scaling down required auto-pilot to be configured to cleanup <a href="https://developer.hashicorp.com/vault/docs/concepts/integrated-storage/autopilot#dead-server-cleanup">&quot;dead servers&quot;</a>. If this configuration is skipped, quorum may be lost.</p>
 </aside></script></section><section data-markdown><script type="text/template">
-## Scaling
+## Scaling 2/2
 
 HashiCorp advices this [sizing](https://developer.hashicorp.com/vault/tutorials/day-one-raft/raft-reference-architecture#hardware-sizing-for-vault-servers) for individual Vault nodes:
 
@@ -187,7 +188,7 @@ What `small` and `large` are, is not very explicit.
 
 <aside class="notes"><p>Smaller instances can certainly work, but if a Vault instance runs out of memory, the Vault cluster may become unstable. This situation can be difficult to fix.</p>
 </aside></script></section></section><section ><section data-markdown><script type="text/template">
-## Initializing
+## Initializing 1/2
 
 Any Vault node or cluster needs to be initialized. Initializing created an encrypted storage backend and returns the "unseal keys" or "recovery keys" and root-token. (for automatically unsealed instances) **ONCE**.
 
@@ -195,7 +196,7 @@ Unseal/recovery keys can be PGP can be used to prevent plain-text (shared) keys 
 
 It's adviced to carefully run this procedure.
 </script></section><section data-markdown><script type="text/template">
-## Initializing
+## Initializing 2/2
 
 The "root-token" or "root-key" is the initial key that allows all actions on Vault.
 
@@ -203,7 +204,7 @@ This token should be revoked as early as possible, after personal users have "hi
 
 <aside class="notes"><p>Most Vault installations have the root-token <strong>NOT</strong> revoked, which is a serurity issue.</p>
 </aside></script></section></section><section ><section data-markdown><script type="text/template">
-## Unsealing
+## Unsealing 1/6
 
 Every time Vault starts, it needs to be unseal. These are typical situations when unsealing is required:
 
@@ -212,7 +213,7 @@ Every time Vault starts, it needs to be unseal. These are typical situations whe
 - Crash and start
 - Stop, update, start
 </script></section><section data-markdown><script type="text/template">
-## Unsealing
+## Unsealing 2/6
 
 Manual unsealing requires unsealing as many times as the amount of `key-threshold` set when initializing Vault. The default value for `key-threshold` is `3` out of the `5` `key-shares`.
 
@@ -220,7 +221,7 @@ This means at least 3 people need to enter an unseal key on **each Vault instanc
 
 Manaul unsealing is not preferred.
 </script></section></section><section ><section data-markdown><script type="text/template">
-## Unsealing
+## Unsealing 3/6
 
 You can have Vault unseal automatically in a few way.
 
@@ -230,25 +231,25 @@ You can have Vault unseal automatically in a few way.
 - HSM
 - Transit
 </script></section><section data-markdown><script type="text/template">
-## Unsealing
+## Unsealing 4/6
 
 AWS KMS, Azure Key Vault and GCP Cloud KMS use a key on a cloud provider to unseal. Access to such a key becomes critical for availability and sensitive.
 
 <aside class="notes"><p>You can unseal a non-cloud Vault instance using cloud keys.</p>
 </aside></script></section><section data-markdown><script type="text/template">
-## Unsealing
+## Unsealing 5/6
 
 An HSM can be used to unseal Vault. This does introduce a dependency on an HSM, but greatly reduces the administrative work required for unsealing.
 </script></section><section data-markdown><script type="text/template">
-## Unsealing
+## Unsealing 6/6
 
 `Transit` can also be used to unseal Vault. This mechanism unseals Vault using another Vault. This means there is a dependency on that other Vault and the initial Vault needs to be unsealed as well, likely manual.
 </script></section></section><section ><section data-markdown><script type="text/template">
-## Disaster Recovery
+## Disaster Recovery 1/3
 
 Vault clusters (or instances) can be related in a "disaster recovery" replication setup.
 </script></section><section data-markdown><script type="text/template">
-## Disaster Recovery
+## Disaster Recovery 2/3
 
 - Syncronizes all data.
 - Has a primary and secondary
@@ -256,13 +257,13 @@ Vault clusters (or instances) can be related in a "disaster recovery" replicatio
 - Secondary does not provide service until promoted.
 - Is an Enterprise feature.
 </script></section><section data-markdown><script type="text/template">
-## Disaster Recovery
+## Disaster Recovery 3/3
 
 The size of a "cluster" (`1`, `3` or `5`) has no impact on DR, you can mix any size.
 
 Disaster Recovery can also be used to migrate from one cluster to another.
 </script></section></section><section ><section data-markdown><script type="text/template">
-## Performance Replication
+## Performance Replication 1/2
 
 Vault clusters can syncronize (selected) data in a "performance replication" setup.
 
@@ -274,7 +275,7 @@ Performance Replication:
 - Secondary does provide service.
 - Is an Enterprise feature.
 </script></section><section data-markdown><script type="text/template">
-## Performance Replication
+## Performance Replication 2/2
 
 Disaster Recovery and Performance Replication can be combined.
 
@@ -370,13 +371,13 @@ Dynamic DNS is typically slower than a loadbalancer to fail over.
 2. Service checks (availability and response time) help determine the current and future health.
 3. Vault telemetry can be used to scrap metrics.
 </script></section><section ><section data-markdown><script type="text/template">
-## Logging
+## Logging 1/3
 
 Operational logs (`journalctl`) help understand the past and current state of Vault.
 
 Audit logs can be required and help determine usage of Vault and may be required for compliance.
 </script></section><section data-markdown><script type="text/template">
-## Logging
+## Logging 2/3
 
 Audit logs can be stored or sent to one or more of:
 
@@ -386,18 +387,18 @@ Audit logs can be stored or sent to one or more of:
 
 <aside class="notes"><p>Audit logs need rotation.</p>
 </aside></script></section><section data-markdown><script type="text/template">
-## Logging
+## Logging 3/3
 
 If no audit devices are available, Vault stops serving requests.
 </script></section></section><section ><section data-markdown><script type="text/template">
-## Backup and restore
+## Backup and restore 1/3
 
 This is your last resort and can be for forensics.
 
 - Backup is a snapshot of the data, not configuration.
 - A restore, restores **ALL** data, not per namespace or secret engine.
 </script></section><section data-markdown><script type="text/template">
-## Backup and restore
+## Backup and restore 2/3
 
 You can store to:
 
@@ -406,7 +407,7 @@ You can store to:
 - Azure (`azure-blob`).
 - GCP (`google-gcs`).
 </script></section><section data-markdown><script type="text/template">
-## Backup and restore
+## Backup and restore 3/3
 
 Typically configured with `interval` and `retain`:
 
@@ -419,7 +420,7 @@ Typically configured with `interval` and `retain`:
 
 <aside class="notes"><p>Vault takes care of cleaning up old backups.</p>
 </aside></script></section></section><section ><section data-markdown><script type="text/template">
-## Others
+## Others 1/2
 
 Writing Standard Operational Procedures helps, for example:
 
@@ -430,7 +431,7 @@ Writing Standard Operational Procedures helps, for example:
 - Emergency sealing.
 - ...
 </script></section><section data-markdown><script type="text/template">
-## Others
+## Others 2/2
 
 - Configuring Vault (`audit`, `autopilot` and `snapshot`) using Terraform works perfectly.
 - Vault is a "cloud native" tool. You can (if desired) never login to the instance.
