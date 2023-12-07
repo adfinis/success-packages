@@ -146,6 +146,42 @@ Well [documented](https://developer.hashicorp.com/vault/api-docs), and feature c
 
 ## Vault API
 
+```shell
+curl \
+    -H "X-Vault-Token: hvs.OVWwDAoEvtdYh8Qe0nvFuOPE" \
+    -X GET \
+    http://127.0.0.1:8200/v1/secret/data/my_secret 
+```
+
+---
+
+## Vaukt API
+
+```json
+{
+  "request_id": "4b15ae49-1c45-1052-c106-b7d005dc2858",
+  "lease_id": "",
+  "renewable": false,
+  "lease_duration": 0,
+  "data": {
+    "data": {
+      "password": "mypassword",
+      "username": "myusername"
+    },
+    "metadata": {
+      "created_time": "2023-12-07T09:03:27.87442Z",
+      "custom_metadata": null,
+      "deletion_time": "",
+      "destroyed": false,
+      "version": 1
+    }
+  },
+  "wrap_info": null,
+  "warnings": null,
+  "auth": null
+}
+```
+
 ---
 
 ## Questions
