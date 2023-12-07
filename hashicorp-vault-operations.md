@@ -18,6 +18,7 @@ This presentation guides you through the Vault operations you may need to do to 
 - Who are you?
 
 ---
+
 ## Topics
 
 - Installing
@@ -41,7 +42,7 @@ This presentation guides you through the Vault operations you may need to do to 
 
 ---
 
-## Installing
+## Installing 1/4
 
 Vault is a single binary in a couple of version.
 
@@ -53,7 +54,7 @@ Vault is a single binary in a couple of version.
 
 ----
 
-## Installing
+## Installing 2/4
 
 There are binaries available for many platforms:
 
@@ -69,7 +70,7 @@ Supported architectures: `arm`, `arm64`, `386` and `amd64` .
 
 ----
 
-## Installing
+## Installing 3/4
 
 When using a binary, there are a few thinks that need to be done to a system:
 
@@ -81,7 +82,7 @@ When using a binary, there are a few thinks that need to be done to a system:
 
 ----
 
-## Installing
+## Installing 4/4
 
 Rather than a binary, a package can also be installed:
 
@@ -92,7 +93,7 @@ More [detail](https://www.hashicorp.com/blog/announcing-the-hashicorp-linux-repo
 
 ---
 
-## Updating
+## Updating 1/4
 
 Every 2 weeks a new version is [released](https://releases.hashicorp.com/vault/).
 
@@ -100,7 +101,7 @@ Some updates contain security fixes and may require a quick installation.
 
 ----
 
-## Updating
+## Updating 2/3
 
 Simply replace the binary or package. To prevent unnecessary outages, use this order:
 
@@ -113,7 +114,7 @@ NOTE: You can technically update in any order, but may experience minor outages 
 
 ----
 
-## Updating
+## Updating 3/3
 
 As updating is required somewhat frequently, is specific and critical; automating this using for example Ansible will prove valuable.
 
@@ -121,7 +122,7 @@ NOTE: Please have a non-production environment prepared to exercise the update.
 
 ---
 
-## Clustering (HA)
+## Clustering (HA) 1/6
 
 You can create a cluster of Vault instances, which can offer redundancy.
 
@@ -129,7 +130,7 @@ NOTE: Vault write actions will always be handled by the leader, to performance i
 
 ----
 
-## Clustering (HA)
+## Clustering (HA) 2/6
 
 You can manually create a cluster:
 
@@ -141,7 +142,7 @@ NOTE: Automatic joining is preferred to reduce administrative burden.
 
 ----
 
-## Clustering (HA)
+## Clustering (HA) 3/6
 
 Interesting to know:
 
@@ -150,14 +151,14 @@ Interesting to know:
 
 ----
 
-## Clustering (HA)
+## Clustering (HA) 4/6
 
 3. Both ports should be available to all members of a cluster.
 4. Port `:tcp/8200` uses `HTTPS`. The nodes should trust each others certificates. This is typically done by having a single certificate for all nodes, having either a wildcard (`*.examples.com`) or a specific Subject Alternate Name ("SAN"). For "SAN", node names need to be known.
 
 ----
 
-## Clustering (HA)
+## Clustering (HA) 5/6
 
 Automatic joining is preferred over manual joining. It allows instance replacements to occur without human intervention.
 
@@ -174,7 +175,7 @@ Automatic joining is preferred over manual joining. It allows instance replaceme
 
 ----
 
-## Clustering (HA)
+## Clustering (HA) 6/6
 
 Automatically joining uses [`go discovery`](https://github.com/hashicorp/go-discover), which has many "providers", including:
 
@@ -186,7 +187,7 @@ NOTE: "auto join" and "auto unseal" are often confused. They are different conce
 
 ---
 
-## Scaling
+## Scaling 1/2
 
 Vault can be scaled. This is done for availability, not for performance.
 
@@ -198,7 +199,7 @@ NOTE: Scaling down required auto-pilot to be configured to cleanup ["dead server
 
 ----
 
-## Scaling
+## Scaling 2/2
 
 HashiCorp advices this [sizing](https://developer.hashicorp.com/vault/tutorials/day-one-raft/raft-reference-architecture#hardware-sizing-for-vault-servers) for individual Vault nodes:
 
@@ -213,7 +214,7 @@ NOTE: Smaller instances can certainly work, but if a Vault instance runs out of 
 
 ---
 
-## Initializing
+## Initializing 1/2
 
 Any Vault node or cluster needs to be initialized. Initializing created an encrypted storage backend and returns the "unseal keys" or "recovery keys" and root-token. (for automatically unsealed instances) **ONCE**.
 
@@ -223,7 +224,7 @@ It's adviced to carefully run this procedure.
 
 ----
 
-## Initializing
+## Initializing 2/2
 
 The "root-token" or "root-key" is the initial key that allows all actions on Vault.
 
@@ -233,7 +234,7 @@ NOTE: Most Vault installations have the root-token **NOT** revoked, which is a s
 
 ---
 
-## Unsealing
+## Unsealing 1/6
 
 Every time Vault starts, it needs to be unseal. These are typical situations when unsealing is required:
 
@@ -244,7 +245,7 @@ Every time Vault starts, it needs to be unseal. These are typical situations whe
 
 ----
 
-## Unsealing
+## Unsealing 2/6
 
 Manual unsealing requires unsealing as many times as the amount of `key-threshold` set when initializing Vault. The default value for `key-threshold` is `3` out of the `5` `key-shares`.
 
@@ -254,7 +255,7 @@ Manaul unsealing is not preferred.
 
 ---
 
-## Unsealing
+## Unsealing 3/6
 
 You can have Vault unseal automatically in a few way.
 
@@ -266,7 +267,7 @@ You can have Vault unseal automatically in a few way.
 
 ----
 
-## Unsealing
+## Unsealing 4/6
 
 AWS KMS, Azure Key Vault and GCP Cloud KMS use a key on a cloud provider to unseal. Access to such a key becomes critical for availability and sensitive.
 
@@ -274,25 +275,25 @@ NOTE: You can unseal a non-cloud Vault instance using cloud keys.
 
 ----
 
-## Unsealing
+## Unsealing 5/6
 
 An HSM can be used to unseal Vault. This does introduce a dependency on an HSM, but greatly reduces the administrative work required for unsealing.
 
 ----
 
-## Unsealing
+## Unsealing 6/6
 
 `Transit` can also be used to unseal Vault. This mechanism unseals Vault using another Vault. This means there is a dependency on that other Vault and the initial Vault needs to be unsealed as well, likely manual.
 
 ---
 
-## Disaster Recovery
+## Disaster Recovery 1/3
 
 Vault clusters (or instances) can be related in a "disaster recovery" replication setup.
 
 ----
 
-## Disaster Recovery
+## Disaster Recovery 2/3
 
 - Syncronizes all data.
 - Has a primary and secondary
@@ -302,7 +303,7 @@ Vault clusters (or instances) can be related in a "disaster recovery" replicatio
 
 ----
 
-## Disaster Recovery
+## Disaster Recovery 3/3
 
 The size of a "cluster" (`1`, `3` or `5`) has no impact on DR, you can mix any size.
 
@@ -310,7 +311,7 @@ Disaster Recovery can also be used to migrate from one cluster to another.
 
 ---
 
-## Performance Replication
+## Performance Replication 1/2
 
 Vault clusters can syncronize (selected) data in a "performance replication" setup.
 
@@ -324,7 +325,7 @@ Performance Replication:
 
 ----
 
-## Performance Replication
+## Performance Replication 2/2
 
 Disaster Recovery and Performance Replication can be combined.
 
@@ -436,7 +437,7 @@ Dynamic DNS is typically slower than a loadbalancer to fail over.
 
 ---
 
-## Logging
+## Logging 1/3
 
 Operational logs (`journalctl`) help understand the past and current state of Vault.
 
@@ -444,7 +445,7 @@ Audit logs can be required and help determine usage of Vault and may be required
 
 ----
 
-## Logging
+## Logging 2/3
 
 Audit logs can be stored or sent to one or more of:
 
@@ -456,13 +457,13 @@ NOTE: Audit logs need rotation.
 
 ----
 
-## Logging
+## Logging 3/3
 
 If no audit devices are available, Vault stops serving requests.
 
 ---
 
-## Backup and restore
+## Backup and restore 1/3
 
 This is your last resort and can be for forensics.
 
@@ -471,7 +472,7 @@ This is your last resort and can be for forensics.
 
 ----
 
-## Backup and restore
+## Backup and restore 2/3
 
 You can store to:
 
@@ -482,7 +483,7 @@ You can store to:
 
 ----
 
-## Backup and restore
+## Backup and restore 3/3
 
 Typically configured with `interval` and `retain`:
 
@@ -497,7 +498,7 @@ NOTE: Vault takes care of cleaning up old backups.
 
 ---
 
-## Others
+## Others 1/2
 
 Writing Standard Operational Procedures helps, for example:
 
@@ -510,7 +511,7 @@ Writing Standard Operational Procedures helps, for example:
 
 ----
 
-## Others
+## Others 2/2
 
 - Configuring Vault (`audit`, `autopilot` and `snapshot`) using Terraform works perfectly.
 - Vault is a "cloud native" tool. You can (if desired) never login to the instance.
