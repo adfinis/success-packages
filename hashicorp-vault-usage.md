@@ -158,7 +158,7 @@ password    mypassword
 username    myusername
 ```
 
-> YAML `vault kv get --field=data --format=yaml secret/my_secret`
+-YAML: `vault kv get --field=data --format=yaml secret/my_secret`
 
 ---
 
