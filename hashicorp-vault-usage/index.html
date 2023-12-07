@@ -48,39 +48,15 @@ A tool to manage *secrets*, typically for *systems*.
 
 - [Install Vault](https://developer.hashicorp.com/vault/docs/install).
 - [Start Vault](https://developer.hashicorp.com/vault/tutorials/getting-started/getting-started-dev-server).
-</script></section></section><section  data-markdown><script type="text/template">
-## Ways to use Vault
-
-- UI.
-- CLI.
-- API.
-
-> In the end, it's all API.
-</script></section><section ><section data-markdown><script type="text/template">
-## Vault UI 1/3
-
-Userfriendly, not all features are available.
 </script></section><section data-markdown><script type="text/template">
-## Vault UI 2/3
-
-![The Vault UI dashboard](https://raw.githubusercontent.com/adfinis/success-packages/master/images/vault-ui-dashboard.png)
-</script></section><section data-markdown><script type="text/template">
-## Vault UI 3/3
-
-![The Vault UI exposing a KV](https://raw.githubusercontent.com/adfinis/success-packages/master/images/vault-ui-kv.png)
-</script></section></section><section ><section data-markdown><script type="text/template">
-## Vault CLI 1/6
-
-Mostly used for administration, experimenting and debugging.
-</script></section><section data-markdown><script type="text/template">
-## Vault CLI 2/6
+## Quick instruction
 
 ```shell
 > vault server -dev
 > export VAULT_ADDR="http://127.0.0.1:8200"
 ```
 </script></section><section data-markdown><script type="text/template">
-## Vault CLI 3/6
+## Login to Vault
 
 ```shell
 > vault login
@@ -99,20 +75,39 @@ token_policies       ["root"]
 identity_policies    []
 policies             ["root"]
 ```
-</script></section><section data-markdown><script type="text/template">
-## Vault CLI 4/6
+</script></section></section><section ><section data-markdown><script type="text/template">
+## Ways to use Vault
 
-```shell
-> vault secrets list
-Path          Type         Accessor              Description
-----          ----         --------              -----------
-cubbyhole/    cubbyhole    cubbyhole_ce014447    per-token private secret storage
-identity/     identity     identity_dab74cb7     identity store
-secret/       kv           kv_cbcf9046           key/value secret storage
-sys/          system       system_b6408332       system endpoints used for control, policy and debugging
-```
+- UI.
+- CLI.
+- API.
+
+> In the end, it's all API.
 </script></section><section data-markdown><script type="text/template">
-## Vault CLI 5/6
+## What we're doing
+
+For each method (UI, CLI, API) we will:
+
+1. Create a secret.
+2. Read the secret.
+</script></section></section><section ><section data-markdown><script type="text/template">
+## Vault UI 1/3
+
+Userfriendly, not all features are available.
+</script></section><section data-markdown><script type="text/template">
+## Vault UI 2/3
+
+![The Vault UI dashboard](https://raw.githubusercontent.com/adfinis/success-packages/master/images/vault-ui-dashboard.png)
+</script></section><section data-markdown><script type="text/template">
+## Vault UI 3/3
+
+![The Vault UI exposing a KV](https://raw.githubusercontent.com/adfinis/success-packages/master/images/vault-ui-kv.png)
+</script></section></section><section ><section data-markdown><script type="text/template">
+## Vault CLI 1/3
+
+Mostly used for administration, experimenting and debugging.
+</script></section><section data-markdown><script type="text/template">
+## Vault CLI 2/3
 
 ```shell
 > vault kv put -mount=secret my_secret \
@@ -131,7 +126,7 @@ destroyed          false
 version            1
 ```
 </script></section><section data-markdown><script type="text/template">
-## Vault CLI 6/6
+## Vault CLI 3/3
 
 ```shell
 > vault kv get secret/my_secret
@@ -142,13 +137,24 @@ password    mypassword
 username    myusername
 ```
 
--YAML: `vault kv get --field=data --format=yaml secret/my_secret`
+- YAML: `vault kv get --field=data --format=yaml secret/my_secret`
 </script></section></section><section ><section data-markdown><script type="text/template">
-## Vault API 1/3
+## Vault API 1/4
 
 Well [documented](https://developer.hashicorp.com/vault/api-docs), and feature complete.
 </script></section><section data-markdown><script type="text/template">
-## Vault API 2/3
+## Vault API 2/4
+
+```shell
+curl \
+    -H "X-Vault-Token: hvs.OVWwDAoEvtdYh8Qe0nvFuOPE" \
+    -H "Content-Type: application/json" \
+    -X POST \
+    -d '{"data":{"username":"myusername", "password":"mypassword"}}' \
+    http://127.0.0.1:8200/v1/secret/data/my_secret
+```
+</script></section><section data-markdown><script type="text/template">
+## Vault API 3/4
 
 ```shell
 curl \
@@ -157,7 +163,7 @@ curl \
     http://127.0.0.1:8200/v1/secret/data/my_secret 
 ```
 </script></section></section><section  data-markdown><script type="text/template">
-## Vaukt API 3/3
+## Vault API 4/4
 
 ```json
 {
