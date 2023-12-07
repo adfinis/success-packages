@@ -30,13 +30,14 @@ This presentation guides you through the usage of Vault.
 A tool to manage *secrets*, typically for *systems*.
 
 > Secrets: Anything sensitive; credentials, API keys, SSL keys, etc.
+
 > Systems: An application like Tomcat, CI, k8s, etc.
 
 ---
 
 ## Ways to use Vault
 
-- CLI: `vault`.
+- CLI.
 - UI.
 - API.
 
@@ -55,6 +56,8 @@ Mostly used for administration and debugging.
 ```text
 export VAULT_ADDR='http://127.0.0.1:8200'
 ```
+
+----
 
 ## Vault CLI 3/4
 
@@ -100,7 +103,7 @@ Nice, but not all features are available.
 
 ## Vault UI 2/2
 
-![The Vault UI](/images/vault-ui.png)
+![The Vault UI](https://raw.githubusercontent.com/adfinis/success-packages/master/images/vault-ui.png)
 
 ---
 
