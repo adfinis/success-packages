@@ -21,7 +21,12 @@ This presentation guides you through the usage of Vault.
 
 ## Topics
 
--
+- Vault
+- UI
+- CLI
+- API
+- Vault Agent
+- Vault SDK
 
 ---
 
@@ -37,32 +42,50 @@ A tool to manage *secrets*, typically for *systems*.
 
 ## Ways to use Vault
 
-- CLI.
 - UI.
+- CLI.
 - API.
 
 > In the end, it's all API.
 
 ---
 
-## Vault CLI 1/5
+## Vault UI 1/3
 
-Mostly used for administration and debugging.
+Userfriendly, not all features are available.
 
 ----
 
-## Vault CLI 2/5
+## Vault UI 2/3
+
+![The Vault UI dashboard](https://raw.githubusercontent.com/adfinis/success-packages/master/images/vault-ui-dashboard.png)
+
+----
+
+## Vault UI 3/3
+
+![The Vault UI exposing a KV](https://raw.githubusercontent.com/adfinis/success-packages/master/images/vault-ui-kv.png)
+
+---
+
+## Vault CLI 1/6
+
+Mostly used for administration, experimenting and debugging.
+
+----
+
+## Vault CLI 2/6
 
 ```text
-export VAULT_ADDR='http://127.0.0.1:8200'
+> export VAULT_ADDR='http://127.0.0.1:8200'
 ```
 
 ----
 
-## Vault CLI 3/5
+## Vault CLI 3/6
 
-```text
-vault login
+```shell
+> vault login
 Token (will be hidden): 
 Success! You are now authenticated. The token information displayed below
 is already stored in the token helper. You do NOT need to run "vault login"
@@ -81,10 +104,10 @@ policies             ["root"]
 
 ----
 
-## Vault CLI 4/5
+## Vault CLI 4/6
 
-```text
-vault secrets list
+```shell
+> vault secrets list
 Path          Type         Accessor              Description
 ----          ----         --------              -----------
 cubbyhole/    cubbyhole    cubbyhole_ce014447    per-token private secret storage
@@ -95,10 +118,29 @@ sys/          system       system_b6408332       system endpoints used for contr
 
 ----
 
-## Vault CLI 5/5
+## Vault CLI 5/6
 
 ```shell
-vault kv get secret/my_secret
+> vault kv put -mount=secret my_secret username=myusername password=mypassword
+==== Secret Path ====
+secret/data/my_secret
+
+======= Metadata =======
+Key                Value
+---                -----
+created_time       2023-12-07T10:06:40.850236Z
+custom_metadata    <nil>
+deletion_time      n/a
+destroyed          false
+version            1
+```
+
+----
+
+## Vault CLI 6/6
+
+```shell
+> vault kv get secret/my_secret
 ==== Secret Path ====
 secret/data/my_secret
 
@@ -120,31 +162,13 @@ username    myusername
 
 ---
 
-## Vault UI 1/3
-
-Nice, but not all features are available.
-
-----
-
-## Vault UI 2/3
-
-![The Vault UI dashboard](https://raw.githubusercontent.com/adfinis/success-packages/master/images/vault-ui-dashboard.png)
-
-----
-
-## Vault UI 3/3
-
-![The Vault UI exposing a KV](https://raw.githubusercontent.com/adfinis/success-packages/master/images/vault-ui-kv.png)
-
----
-
-## Vault API
+## Vault API 1/3
 
 Well [documented](https://developer.hashicorp.com/vault/api-docs), and feature complete.
 
 ----
 
-## Vault API
+## Vault API 2/3
 
 ```shell
 curl \
@@ -155,7 +179,7 @@ curl \
 
 ---
 
-## Vaukt API
+## Vaukt API 3/3
 
 ```json
 {
