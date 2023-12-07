@@ -7,7 +7,7 @@ title: Vault usage
 
 ---
 
-This presentation guides you through the usage of Vault.
+A guide on how to use HashiCorp Vault.
 
 ---
 
