@@ -97,21 +97,27 @@ For each method (UI, CLI, API) we will:
 
 ---
 
-## Vault UI 1/3
+## Vault UI 1/4
 
 Userfriendly, not all features are available.
 
 ----
 
-## Vault UI 2/3
+## Vault UI 2/4
 
-![The Vault UI dashboard](https://raw.githubusercontent.com/adfinis/success-packages/master/images/vault-ui-dashboard.png)
+![The Vault UI overview](https://raw.githubusercontent.com/adfinis/success-packages/master/assets/images/Vault-overview.png)
 
 ----
 
-## Vault UI 3/3
+## Vault UI 3/4
 
-![The Vault UI exposing a KV](https://raw.githubusercontent.com/adfinis/success-packages/master/images/vault-ui-kv.png)
+![The Vault UI secrets engine](https://raw.githubusercontent.com/adfinis/success-packages/master/assets/images/vault-secrets-engine.png)
+
+----
+
+## Vault UI 4/4
+
+![The Vault UI kv secret](https://raw.githubusercontent.com/adfinis/success-packages/master/assets/images/vault-secret.png)
 
 ---
 
