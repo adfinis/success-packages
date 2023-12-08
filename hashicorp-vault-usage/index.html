@@ -162,7 +162,7 @@ curl \
     -X GET \
     http://127.0.0.1:8200/v1/secret/data/my_secret 
 ```
-</script></section></section><section  data-markdown><script type="text/template">
+</script></section><section data-markdown><script type="text/template">
 ## Vault API 4/4
 
 ```json
@@ -189,11 +189,34 @@ curl \
   "auth": null
 }
 ```
-</script></section><section  data-markdown><script type="text/template">
+</script></section></section><section  data-markdown><script type="text/template">
 ## Vault agent
-</script></section><section  data-markdown><script type="text/template">
+
+The agent can be used to:
+
+1. Authenticate to Vault.
+2. Retrieve secrets from Vault.
+3. Write secrets to disk.
+
+> Updates to a secret will be automatically written to disk.
+</script></section><section ><section data-markdown><script type="text/template">
 ## Vault SDK
-</script></section><section  data-markdown><script type="text/template">
+
+There are [libraries](https://developer.hashicorp.com/vault/api-docs/libraries) for many languages.
+</script></section><section data-markdown><script type="text/template">
+## Vault SDK - Ansible
+
+```yaml
+    - name: Show username
+      ansible.builtin.debug:
+        msg: "username: {{ lookup('community.hashi_vault.hashi_vault', 'secret=secret/data/my_secret:username') }}"
+      environment:
+        ANSIBLE_HASHI_VAULT_ADDR: "{{ vault_addr }}"
+        ANSIBLE_HASHI_VAULT_TOKEN: "{{ vault_token }}"
+```
+
+> See [demo](ansible)
+</script></section></section><section  data-markdown><script type="text/template">
 ## Questions
 </script></section><section  data-markdown><script type="text/template">
 ## Thanks
