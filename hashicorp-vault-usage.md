@@ -245,7 +245,7 @@ There are [libraries](https://developer.hashicorp.com/vault/api-docs/libraries) 
         ANSIBLE_HASHI_VAULT_TOKEN: "{{ vault_token }}"
 ```
 
-> See [demo](ansible)
+> See [demo](https://github.com/adfinis/success-packages/tree/master/assets-ansible-sdk)
 
 ---
 
