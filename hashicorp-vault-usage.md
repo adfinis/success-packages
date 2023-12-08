@@ -185,7 +185,7 @@ curl \
     http://127.0.0.1:8200/v1/secret/data/my_secret 
 ```
 
----
+----
 
 ## Vault API 4/4
 
@@ -218,9 +218,34 @@ curl \
 
 ## Vault agent
 
+The agent can be used to:
+
+1. Authenticate to Vault.
+2. Retrieve secrets from Vault.
+3. Write secrets to disk.
+
+> Updates to a secret will be automatically written to disk.
+
 ---
 
 ## Vault SDK
+
+There are [libraries](https://developer.hashicorp.com/vault/api-docs/libraries) for many languages.
+
+----
+
+## Vault SDK - Ansible
+
+```yaml
+    - name: Show username
+      ansible.builtin.debug:
+        msg: "username: {{ lookup('community.hashi_vault.hashi_vault', 'secret=secret/data/my_secret:username') }}"
+      environment:
+        ANSIBLE_HASHI_VAULT_ADDR: "{{ vault_addr }}"
+        ANSIBLE_HASHI_VAULT_TOKEN: "{{ vault_token }}"
+```
+
+> See [demo](ansible)
 
 ---
 
