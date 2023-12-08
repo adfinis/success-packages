@@ -105,19 +105,19 @@ Userfriendly, not all features are available.
 
 ## Vault UI 2/4
 
-![The Vault UI overview](https://raw.githubusercontent.com/adfinis/success-packages/master/assets/images/vault-overview.png)
+![The Vault UI overview](https://raw.githubusercontent.com/adfinis/success-packages/master/assets/images/Vault-overview.png)
 
 ----
 
 ## Vault UI 3/4
 
-![The Vault UI secrets engine](https://raw.githubusercontent.com/adfinis/success-packages/master/assets/images/vault-secrets-engine.png)
+![The Vault UI secrets engine](https://raw.githubusercontent.com/adfinis/success-packages/master/assets/images/Vault-secrets-engine.png)
 
 ----
 
 ## Vault UI 4/4
 
-![The Vault UI kv secret](https://raw.githubusercontent.com/adfinis/success-packages/master/assets/images/vault-secret.png)
+![The Vault UI kv secret](https://raw.githubusercontent.com/adfinis/success-packages/master/assets/images/Vault-secret.png)
 
 ---
 
