@@ -105,7 +105,7 @@ Userfriendly, not all features are available.
 
 ## Vault UI 2/4
 
-![The Vault UI overview](https://raw.githubusercontent.com/adfinis/success-packages/master/assets/images/Vault-overview.png)
+![The Vault UI overview](https://raw.githubusercontent.com/adfinis/success-packages/master/assets/images/vault-overview.png)
 
 ----
 
