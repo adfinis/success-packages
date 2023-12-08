@@ -56,27 +56,6 @@ A tool to manage *secrets*, typically for *systems*.
 
 ----
 
-## Login to Vault
-
-```shell
-> vault login
-Token (will be hidden): 
-Success! You are now authenticated. The token information displayed below
-is already stored in the token helper. You do NOT need to run "vault login"
-again. Future Vault requests will automatically use this token.
-
-Key                  Value
----                  -----
-token                hvs.OVWwDAoEvtdYh8Qe0nvFuOPE
-token_accessor       76oHT2vMS7CAQYPPxDXYyiUB
-token_duration       ∞
-token_renewable      false
-token_policies       ["root"]
-identity_policies    []
-policies             ["root"]
-```
-
----
 
 ## Ways to use Vault
 
@@ -126,6 +105,28 @@ Userfriendly, not all features are available.
 Mostly used for administration, experimenting and debugging.
 
 ----
+
+## Vault CLI 1/3
+
+```shell
+> vault login
+Token (will be hidden): 
+Success! You are now authenticated. The token information displayed below
+is already stored in the token helper. You do NOT need to run "vault login"
+again. Future Vault requests will automatically use this token.
+
+Key                  Value
+---                  -----
+token                hvs.OVWwDAoEvtdYh8Qe0nvFuOPE
+token_accessor       76oHT2vMS7CAQYPPxDXYyiUB
+token_duration       ∞
+token_renewable      false
+token_policies       ["root"]
+identity_policies    []
+policies             ["root"]
+```
+
+---
 
 ## Vault CLI 2/3
 
@@ -222,12 +223,20 @@ curl \
 
 ---
 
+## Authentication
+
+1. Login using a method, such as approle, userpass, etc.
+2. Retreive a token.
+3. Use the token to access Vault.
+
+---
+
 ## Vault agent
 
 The agent can be used to:
 
 1. Authenticate to Vault.
-2. Retrieve secrets from Vault.
+2. Store the token.
 3. Write secrets to disk.
 
 > Updates to a secret will be automatically written to disk.
