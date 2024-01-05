@@ -173,8 +173,9 @@ Well [documented](https://developer.hashicorp.com/vault/api-docs), and feature c
 ## Vault API 2/4
 
 ```shell
+export VAULT_TOKEN="hvs.OVWwDAoEvtdYh8Qe0nvFuOPE"
 curl \
-    -H "X-Vault-Token: hvs.OVWwDAoEvtdYh8Qe0nvFuOPE" \
+    -H "X-Vault-Token: ${VAULT_TOKEN}" \
     -H "Content-Type: application/json" \
     -X POST \
     -d '{"data":{"username":"myusername", "password":"mypassword"}}' \
