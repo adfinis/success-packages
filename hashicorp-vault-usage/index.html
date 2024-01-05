@@ -164,7 +164,7 @@ curl \
 
 ```shell
 curl \
-    -H "X-Vault-Token: hvs.OVWwDAoEvtdYh8Qe0nvFuOPE" \
+    -H "X-Vault-Token: ${VAULT_TOKEN}" \
     -X GET \
     http://127.0.0.1:8200/v1/secret/data/my_secret 
 ```
@@ -198,7 +198,7 @@ curl \
 </script></section></section><section  data-markdown><script type="text/template">
 ## Authentication
 
-1. Login using a method, such as approle, userpass, etc.
+1. Login using a method (approle, userpass, etc.)
 2. Retreive a token.
 3. Use the token to access Vault.
 </script></section><section  data-markdown><script type="text/template">
