@@ -1,0 +1,4 @@
+{{ with secret "secret/my_secret" }}
+username={{ .Data.data.username }}
+password={{ .Data.data.password }}
+{{ end }}

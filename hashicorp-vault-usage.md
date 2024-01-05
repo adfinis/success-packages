@@ -242,6 +242,12 @@ The agent can be used to:
 
 > Updates to a secret will be automatically written to disk.
 
+----
+
+## Vault agent setup
+
+See [here](https://github.com/adfinis/success-packages/tree/master/assets/vault-agent).
+
 ---
 
 ## Vault SDK
