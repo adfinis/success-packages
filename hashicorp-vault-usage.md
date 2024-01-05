@@ -188,7 +188,7 @@ curl \
 
 ```shell
 curl \
-    -H "X-Vault-Token: hvs.OVWwDAoEvtdYh8Qe0nvFuOPE" \
+    -H "X-Vault-Token: ${VAULT_TOKEN}" \
     -X GET \
     http://127.0.0.1:8200/v1/secret/data/my_secret 
 ```
