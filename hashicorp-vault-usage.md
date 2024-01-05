@@ -226,7 +226,7 @@ curl \
 
 ## Authentication
 
-1. Login using a method, such as approle, userpass, etc.
+1. Login using a method (approle, userpass, etc.)
 2. Retreive a token.
 3. Use the token to access Vault.
 
