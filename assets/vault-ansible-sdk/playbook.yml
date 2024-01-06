@@ -7,7 +7,7 @@
 
   vars:
     vault_addr: "http://localhost:8200"
-    vault_token: "token=hvs.OVWwDAoEvtdYh8Qe0nvFuOPE"
+    vault_token: "{{ lookup('ansible.builtin.file', '~/.vault-token') }}"
 
   tasks:
     - name: Show username and password
