@@ -56,7 +56,6 @@ A tool to manage *secrets*, typically for *systems*.
 
 ----
 
-
 ## Ways to use Vault
 
 - UI.
@@ -100,13 +99,13 @@ Userfriendly, not all features are available.
 
 ---
 
-## Vault CLI 1/3
+## Vault CLI 1/4
 
 Mostly used for administration, experimenting and debugging.
 
 ----
 
-## Vault CLI 1/3
+## Vault CLI 2/4
 
 ```shell
 > vault login
@@ -126,9 +125,9 @@ identity_policies    []
 policies             ["root"]
 ```
 
----
+----
 
-## Vault CLI 2/3
+## Vault CLI 3/4
 
 ```shell
 > vault kv put -mount=secret my_secret \
@@ -149,7 +148,7 @@ version            1
 
 ----
 
-## Vault CLI 3/3
+## Vault CLI 4/4
 
 ```shell
 > vault kv get secret/my_secret
