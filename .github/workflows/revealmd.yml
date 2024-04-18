@@ -1,9 +1,9 @@
---- 
+---
 name: build and deploy revealmd presentation
 
 on:
   push:
-    branches: [master]
+    branches: [master, improvements]
 
 jobs:
   build-and-deploy:
