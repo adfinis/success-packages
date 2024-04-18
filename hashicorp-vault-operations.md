@@ -30,7 +30,7 @@ This presentation guides you through the Vault operations you may need to do to 
 
 ----
 
-## Topics 1/2
+## Topics 2/2
 
 - Disaster Recovery
 - Performance Replication
