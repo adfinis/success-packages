@@ -1,0 +1,1 @@
+This folder contains a Vault docker-compose file for convenience.
