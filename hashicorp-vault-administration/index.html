@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title>Vault administration</title>
+    <link rel="shortcut icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./dist/reset.css" />
+    <link rel="stylesheet" href="./dist/reveal.css" />
+    <link rel="stylesheet" href="./dist/theme/black.css" id="theme" />
+    <link rel="stylesheet" href="./css/highlight/base16/zenburn.css" />
+
+
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template">
+
+# Vault administration
+</script></section><section  data-markdown><script type="text/template">
+A guide that goes deeper into configuring HashiCorp Vault.
+</script></section><section  data-markdown><script type="text/template">
+## Introduction
+
+- Who am I?
+- Who/what is Adfinis?
+- Who are you?
+</script></section><section  data-markdown><script type="text/template">
+## Topics
+
+- Tokens
+- Policies
+</script></section><section ><section data-markdown><script type="text/template">
+## Vault
+
+A tool to manage *secrets*, typically for *systems*.
+
+> Secrets: Anything sensitive; credentials, API keys, SSL keys, etc.
+
+> Systems: An application like Tomcat, CI, k8s, etc.
+</script></section><section data-markdown><script type="text/template">
+## Tokens
+
+Tokens are the core method for *authentication* of clients within Vault.
+
+Nearly all requests to Vault must be accompanied by a token.
+
+Tokens are authenticated by an *auth method*.
+</script></section></section><section  data-markdown><script type="text/template">
+## Token types
+
+There are two types of Vault tokens: service tokens and batch tokens.
+
+In addition, there is also the recovery token. But it is obscure and only used in a special condition
+
+| Token type | Example   |
+|:-----------|:---------:|
+| Service    | hv*s*.xxx |
+| Batch      | hv*b*.xxx |
+</script></section><section  data-markdown><script type="text/template">
+## Token types - service tokens
+
+Vault persists the service tokens in its storage backend.
+
+You can renew a service token or revoke it as necessary.
+</script></section><section  data-markdown><script type="text/template">
+## Token types - service tokens (Vault CLI)
+
+```yaml
+vault token --help
+Usage: vault token <subcommand> [options] [args]
+
+  This command groups subcommands for interacting with tokens. Users can
+  create, lookup, renew, and revoke tokens.
+
+  Create a new token:
+
+      $ vault token create
+
+  Revoke a token:
+
+      $ vault token revoke 96ddf4bc-d217-f3ba-f9bd-017055595017
+
+  Renew a token:
+
+      $ vault token renew 96ddf4bc-d217-f3ba-f9bd-017055595017
+
+  Please see the individual subcommand help for detailed usage information.
+
+Subcommands:
+    capabilities    Print capabilities of a token on a path
+    create          Create a new token
+    lookup          Display information about a token
+    renew           Renew a token lease
+    revoke          Revoke a token and its children
+```
+</script></section><section  data-markdown><script type="text/template">
+## Token types - batch tokens
+
+Vault does not persist the batch tokens.
+
+They carry minimal information to perform Vault actions, making them lightweight and scalable.
+
+But they lack flexibility and features of service tokens.
+</script></section><section  data-markdown><script type="text/template">
+## Token - leases
+
+</script></section><section ><section data-markdown><script type="text/template">
+## Audit logs
+
+
+</script></section><section data-markdown><script type="text/template">
+## Policies
+
+Tokens are mapped to *policies*.
+
+Policies describe *permissions* of a Vault token.
+</script></section><section data-markdown><script type="text/template">
+## Policies templating
+
+
+</script></section><section data-markdown><script type="text/template">
+## Terraform configuration
+
+</script></section><section data-markdown><script type="text/template">
+## Auth engines
+
+</script></section></section><section  data-markdown><script type="text/template">
+## Secret engines (static)
+
+</script></section><section  data-markdown><script type="text/template">
+## Secret engines (dynamic)
+
+
+</script></section><section  data-markdown><script type="text/template">
+## Questions
+</script></section><section  data-markdown><script type="text/template">
+## Thanks
+</script></section></div>
+    </div>
+
+    <script src="./dist/reveal.js"></script>
+
+    <script src="./plugin/markdown/markdown.js"></script>
+    <script src="./plugin/highlight/highlight.js"></script>
+    <script src="./plugin/zoom/zoom.js"></script>
+    <script src="./plugin/notes/notes.js"></script>
+    <script src="./plugin/math/math.js"></script>
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath
+        ]
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {}, queryOptions);
+    </script>
+
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+</html>
