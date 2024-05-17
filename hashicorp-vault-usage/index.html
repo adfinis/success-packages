@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -11,22 +11,30 @@
     <link rel="stylesheet" href="./dist/theme/black.css" id="theme" />
     <link rel="stylesheet" href="./css/highlight/base16/zenburn.css" />
 
-
   </head>
   <body>
     <div class="reveal">
-      <div class="slides"><section  data-markdown><script type="text/template">
+      <div class="slides">
+        <section data-markdown data-separator="\r?\n---\r?\n" data-separator-vertical="\r?\n----\r?\n">
+          <textarea data-template>
+            
 
 # Vault usage
-</script></section><section  data-markdown><script type="text/template">
+
+---
+
 A guide on how to use HashiCorp Vault.
-</script></section><section  data-markdown><script type="text/template">
+
+---
+
 ## Introduction
 
 - Who am I?
 - Who/what is Adfinis?
 - Who are you?
-</script></section><section  data-markdown><script type="text/template">
+
+---
+
 ## Topics
 
 - Vault
@@ -35,7 +43,9 @@ A guide on how to use HashiCorp Vault.
 - API
 - Vault Agent
 - Vault SDK
-</script></section><section ><section data-markdown><script type="text/template">
+
+---
+
 ## Vault
 
 A tool to manage *secrets*, typically for *systems*.
@@ -43,19 +53,25 @@ A tool to manage *secrets*, typically for *systems*.
 > Secrets: Anything sensitive; credentials, API keys, SSL keys, etc.
 
 > Systems: An application like Tomcat, CI, k8s, etc.
-</script></section><section data-markdown><script type="text/template">
+
+----
+
 ## Join the experiment!
 
 - [Install Vault](https://developer.hashicorp.com/vault/docs/install).
 - [Start Vault](https://developer.hashicorp.com/vault/tutorials/getting-started/getting-started-dev-server).
-</script></section><section data-markdown><script type="text/template">
+
+----
+
 ## Quick instruction
 
 ```shell
 > vault server -dev
 > export VAULT_ADDR="http://127.0.0.1:8200"
 ```
-</script></section><section data-markdown><script type="text/template">
+
+----
+
 ## Ways to use Vault
 
 - UI.
@@ -63,34 +79,48 @@ A tool to manage *secrets*, typically for *systems*.
 - API.
 
 > In the end, it's all API.
-</script></section><section data-markdown><script type="text/template">
+
+----
+
 ## What we're doing
 
 For each method (UI, CLI, API) we will:
 
 1. Create a secret.
 2. Read the secret.
-</script></section></section><section ><section data-markdown><script type="text/template">
+
+---
+
 ## Vault UI 1/4
 
 User friendly, not all features are available.
-</script></section><section data-markdown><script type="text/template">
+
+----
+
 ## Vault UI 2/4
 
 ![The Vault UI overview](https://raw.githubusercontent.com/adfinis/success-packages/master/assets/images/Vault-overview.png)
-</script></section><section data-markdown><script type="text/template">
+
+----
+
 ## Vault UI 3/4
 
 ![The Vault UI secrets engine](https://raw.githubusercontent.com/adfinis/success-packages/master/assets/images/Vault-secrets-engine.png)
-</script></section><section data-markdown><script type="text/template">
+
+----
+
 ## Vault UI 4/4
 
 ![The Vault UI kv secret](https://raw.githubusercontent.com/adfinis/success-packages/master/assets/images/Vault-secret.png)
-</script></section></section><section ><section data-markdown><script type="text/template">
+
+---
+
 ## Vault CLI 1/4
 
 Mostly used for administration, experimenting and debugging.
-</script></section><section data-markdown><script type="text/template">
+
+----
+
 ## Vault CLI 2/4
 
 ```shell
@@ -110,7 +140,9 @@ token_policies       ["root"]
 identity_policies    []
 policies             ["root"]
 ```
-</script></section><section data-markdown><script type="text/template">
+
+----
+
 ## Vault CLI 3/4
 
 ```shell
@@ -129,7 +161,9 @@ deletion_time      n/a
 destroyed          false
 version            1
 ```
-</script></section><section data-markdown><script type="text/template">
+
+----
+
 ## Vault CLI 4/4
 
 ```shell
@@ -142,11 +176,15 @@ username    myusername
 ```
 
 - YAML: `vault kv get --field=data --format=yaml secret/my_secret`
-</script></section></section><section ><section data-markdown><script type="text/template">
+
+---
+
 ## Vault API 1/4
 
 Well [documented](https://developer.hashicorp.com/vault/api-docs), and feature complete.
-</script></section><section data-markdown><script type="text/template">
+
+----
+
 ## Vault API 2/4
 
 ```shell
@@ -158,7 +196,9 @@ curl \
     -d '{"data":{"username":"myusername", "password":"mypassword"}}' \
     http://127.0.0.1:8200/v1/secret/data/my_secret
 ```
-</script></section><section data-markdown><script type="text/template">
+
+----
+
 ## Vault API 3/4
 
 ```shell
@@ -167,7 +207,9 @@ curl \
     -X GET \
     http://127.0.0.1:8200/v1/secret/data/my_secret 
 ```
-</script></section><section data-markdown><script type="text/template">
+
+----
+
 ## Vault API 4/4
 
 ```json
@@ -194,13 +236,17 @@ curl \
   "auth": null
 }
 ```
-</script></section></section><section  data-markdown><script type="text/template">
+
+---
+
 ## Authentication
 
 1. Login using a method (approle, userpass, etc.)
 2. Retrieve a token.
 3. Use the token to access Vault.
-</script></section><section ><section data-markdown><script type="text/template">
+
+---
+
 ## Vault agent
 
 The agent can be used to:
@@ -210,15 +256,21 @@ The agent can be used to:
 3. Write secrets to disk.
 
 > Updates to a secret will be automatically written to disk.
-</script></section><section data-markdown><script type="text/template">
+
+----
+
 ## Vault agent setup
 
 See [here](https://github.com/adfinis/success-packages/tree/master/assets/vault-agent).
-</script></section></section><section ><section data-markdown><script type="text/template">
+
+---
+
 ## Vault SDK
 
 There are [libraries](https://developer.hashicorp.com/vault/api-docs/libraries) for many languages.
-</script></section><section data-markdown><script type="text/template">
+
+----
+
 ## Vault SDK - Ansible
 
 ```yaml
@@ -231,14 +283,23 @@ There are [libraries](https://developer.hashicorp.com/vault/api-docs/libraries) 
 ```
 
 > See [demo](https://github.com/adfinis/success-packages/tree/master/assets/vault-ansible-sdk)
-</script></section></section><section  data-markdown><script type="text/template">
+
+---
+
 ## Questions
-</script></section><section  data-markdown><script type="text/template">
+
+---
+
 ## Thanks
-</script></section></div>
+
+          </textarea>
+        </section>
+      </div>
     </div>
 
     <script src="./dist/reveal.js"></script>
+
+    <script src="./mermaid/dist/mermaid.min.js"></script>
 
     <script src="./plugin/markdown/markdown.js"></script>
     <script src="./plugin/highlight/highlight.js"></script>
@@ -266,6 +327,10 @@ There are [libraries](https://developer.hashicorp.com/vault/api-docs/libraries) 
         history: true,
         center: true,
         transition: 'default', // none/fade/slide/convex/concave/zoom
+        slideNumber: true,
+        highlight: {
+          highlightOnLoad: false
+        },
         plugins: [
           RevealMarkdown,
           RevealHighlight,
@@ -278,12 +343,26 @@ There are [libraries](https://developer.hashicorp.com/vault/api-docs/libraries) 
       // options from URL query string
       var queryOptions = Reveal().getQueryHash() || {};
 
-      var options = extend(defaultOptions, {}, queryOptions);
+      var options = extend(defaultOptions, {"width":1400,"height":700,"_":["hashicorp-vault-usage.md"],"static":"output/hashicorp-vault-usage"}, queryOptions);
     </script>
 
 
     <script>
       Reveal.initialize(options);
+      Reveal.addEventListener('ready', function (event) {
+        const blocks = Reveal.getRevealElement().querySelectorAll('pre code:not(.mermaid)');
+        const hlp = Reveal.getPlugin('highlight');
+        blocks.forEach(hlp.highlightBlock);
+      });
+    </script>
+
+    <script>
+      const mermaidOptions = extend({ startOnLoad: false }, {});
+      mermaid.startOnLoad = false;
+      mermaid.initialize(mermaidOptions);
+      const cb = function (event) { mermaid.init(mermaidOptions, '.stack.present>.present pre code.mermaid'); };
+      Reveal.addEventListener('ready', cb);
+      Reveal.addEventListener('slidetransitionend', cb);
     </script>
   </body>
 </html>

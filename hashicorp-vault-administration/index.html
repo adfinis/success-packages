@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -11,27 +11,46 @@
     <link rel="stylesheet" href="./dist/theme/black.css" id="theme" />
     <link rel="stylesheet" href="./css/highlight/base16/zenburn.css" />
 
-
   </head>
   <body>
     <div class="reveal">
-      <div class="slides"><section  data-markdown><script type="text/template">
+      <div class="slides">
+        <section data-markdown data-separator="\r?\n---\r?\n" data-separator-vertical="\r?\n----\r?\n">
+          <textarea data-template>
+            
 
-# Vault administration
-</script></section><section  data-markdown><script type="text/template">
+# Vault Administration
+
+---
+
 A guide that goes deeper into configuring HashiCorp Vault.
-</script></section><section  data-markdown><script type="text/template">
+
+---
+
 ## Introduction
 
 - Who am I?
 - Who/what is Adfinis?
 - Who are you?
-</script></section><section  data-markdown><script type="text/template">
+
+---
+
 ## Topics
 
 - Tokens
+  - Token types
+  - Token leases
+- Logs
+  - Audit
+  - Operational
 - Policies
-</script></section><section ><section data-markdown><script type="text/template">
+  - Templating
+- Configuration
+  - CLI
+  - Terraform
+
+---
+
 ## Vault
 
 A tool to manage *secrets*, typically for *systems*.
@@ -39,36 +58,47 @@ A tool to manage *secrets*, typically for *systems*.
 > Secrets: Anything sensitive; credentials, API keys, SSL keys, etc.
 
 > Systems: An application like Tomcat, CI, k8s, etc.
-</script></section><section data-markdown><script type="text/template">
+
+----
+
 ## Tokens
 
-Tokens are the core method for *authentication* of clients within Vault.
+Tokens are the core method for **authentication** of clients within Vault.
 
-Nearly all requests to Vault must be accompanied by a token.
+> Nearly all requests to Vault must be accompanied by a token.
 
-Tokens are authenticated by an *auth method*.
-</script></section></section><section  data-markdown><script type="text/template">
-## Token types
+Tokens are authenticated by an **auth method**.
 
-There are two types of Vault tokens: service tokens and batch tokens.
+---
 
-In addition, there is also the recovery token. But it is obscure and only used in a special condition
+## Token types - Service and Batch
 
-| Token type | Example   |
-|:-----------|:---------:|
-| Service    | hv*s*.xxx |
-| Batch      | hv*b*.xxx |
-</script></section><section  data-markdown><script type="text/template">
-## Token types - service tokens
+Two main types of Vault tokens: 
+
+| Token type | Example     |  Description |
+|:-----------|:-----------:|:------------:|
+| Service    | hv**s**.xxx |              |
+| Batch      | hv**b**.xxx |              |
+
+---
+
+## Token types - Recovery Token
+
+
+
+---
+
+## Token types - Service Tokens
 
 Vault persists the service tokens in its storage backend.
 
 You can renew a service token or revoke it as necessary.
-</script></section><section  data-markdown><script type="text/template">
-## Token types - service tokens (Vault CLI)
+
+---
+
+## Token types - Vault CLI
 
 ```yaml
-vault token --help
 Usage: vault token <subcommand> [options] [args]
 
   This command groups subcommands for interacting with tokens. Users can
@@ -85,17 +115,10 @@ Usage: vault token <subcommand> [options] [args]
   Renew a token:
 
       $ vault token renew 96ddf4bc-d217-f3ba-f9bd-017055595017
-
-  Please see the individual subcommand help for detailed usage information.
-
-Subcommands:
-    capabilities    Print capabilities of a token on a path
-    create          Create a new token
-    lookup          Display information about a token
-    renew           Renew a token lease
-    revoke          Revoke a token and its children
 ```
-</script></section><section  data-markdown><script type="text/template">
+
+---
+
 ## Token types - batch tokens
 
 Vault does not persist the batch tokens.
@@ -103,44 +126,73 @@ Vault does not persist the batch tokens.
 They carry minimal information to perform Vault actions, making them lightweight and scalable.
 
 But they lack flexibility and features of service tokens.
-</script></section><section  data-markdown><script type="text/template">
-## Token - leases
 
-</script></section><section ><section data-markdown><script type="text/template">
-## Audit logs
+---
 
+## Token leases - service token
 
-</script></section><section data-markdown><script type="text/template">
+Leases created by service tokens (including child tokens' leases) are tracked along with the service token and revoked when the token expires.
+
+---
+
+## Token leases - batch token
+
+---
+
+## Logs
+
+- Audit logs
+- Operational logs
+
+----
+
 ## Policies
 
 Tokens are mapped to *policies*.
 
 Policies describe *permissions* of a Vault token.
-</script></section><section data-markdown><script type="text/template">
+
+----
+
 ## Policies templating
 
 
-</script></section><section data-markdown><script type="text/template">
+----
+
 ## Terraform configuration
 
-</script></section><section data-markdown><script type="text/template">
+
+----
+
 ## Auth engines
 
-</script></section></section><section  data-markdown><script type="text/template">
+
+---
+
 ## Secret engines (static)
 
-</script></section><section  data-markdown><script type="text/template">
+
+---
+
 ## Secret engines (dynamic)
 
 
-</script></section><section  data-markdown><script type="text/template">
+---
+
 ## Questions
-</script></section><section  data-markdown><script type="text/template">
+
+---
+
 ## Thanks
-</script></section></div>
+
+          </textarea>
+        </section>
+      </div>
     </div>
 
     <script src="./dist/reveal.js"></script>
+
+    <script src="./mermaid/dist/mermaid.min.js"></script>
 
     <script src="./plugin/markdown/markdown.js"></script>
     <script src="./plugin/highlight/highlight.js"></script>
@@ -168,6 +220,10 @@ Policies describe *permissions* of a Vault token.
         history: true,
         center: true,
         transition: 'default', // none/fade/slide/convex/concave/zoom
+        slideNumber: true,
+        highlight: {
+          highlightOnLoad: false
+        },
         plugins: [
           RevealMarkdown,
           RevealHighlight,
@@ -180,12 +236,26 @@ Policies describe *permissions* of a Vault token.
       // options from URL query string
       var queryOptions = Reveal().getQueryHash() || {};
 
-      var options = extend(defaultOptions, {}, queryOptions);
+      var options = extend(defaultOptions, {"width":1400,"height":700,"_":["hashicorp-vault-administration.md"],"static":"output/hashicorp-vault-administration"}, queryOptions);
     </script>
 
 
     <script>
       Reveal.initialize(options);
+      Reveal.addEventListener('ready', function (event) {
+        const blocks = Reveal.getRevealElement().querySelectorAll('pre code:not(.mermaid)');
+        const hlp = Reveal.getPlugin('highlight');
+        blocks.forEach(hlp.highlightBlock);
+      });
+    </script>
+
+    <script>
+      const mermaidOptions = extend({ startOnLoad: false }, {});
+      mermaid.startOnLoad = false;
+      mermaid.initialize(mermaidOptions);
+      const cb = function (event) { mermaid.init(mermaidOptions, '.stack.present>.present pre code.mermaid'); };
+      Reveal.addEventListener('ready', cb);
+      Reveal.addEventListener('slidetransitionend', cb);
     </script>
   </body>
 </html>
