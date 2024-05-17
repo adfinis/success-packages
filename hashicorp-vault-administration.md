@@ -3,7 +3,7 @@ title: Vault administration
 
 ---
 
-# Vault administration
+# Vault Administration
 
 ---
 
@@ -22,7 +22,16 @@ A guide that goes deeper into configuring HashiCorp Vault.
 ## Topics
 
 - Tokens
+  - Token types
+  - Token leases
+- Logs
+  - Audit
+  - Operational
 - Policies
+  - Templating
+- Configuration
+  - CLI
+  - Terraform
 
 ---
 
@@ -38,28 +47,32 @@ A tool to manage *secrets*, typically for *systems*.
 
 ## Tokens
 
-Tokens are the core method for *authentication* of clients within Vault.
+Tokens are the core method for **authentication** of clients within Vault.
 
-Nearly all requests to Vault must be accompanied by a token.
+> Nearly all requests to Vault must be accompanied by a token.
 
-Tokens are authenticated by an *auth method*.
-
----
-
-## Token types
-
-There are two types of Vault tokens: service tokens and batch tokens.
-
-In addition, there is also the recovery token. But it is obscure and only used in a special condition
-
-| Token type | Example   |
-|:-----------|:---------:|
-| Service    | hv*s*.xxx |
-| Batch      | hv*b*.xxx |
+Tokens are authenticated by an **auth method**.
 
 ---
 
-## Token types - service tokens
+## Token types - Service and Batch
+
+Two main types of Vault tokens: 
+
+| Token type | Example     |  Description |
+|:-----------|:-----------:|:------------:|
+| Service    | hv**s**.xxx |              |
+| Batch      | hv**b**.xxx |              |
+
+---
+
+## Token types - Recovery Token
+
+
+
+---
+
+## Token types - Service Tokens
 
 Vault persists the service tokens in its storage backend.
 
@@ -67,10 +80,9 @@ You can renew a service token or revoke it as necessary.
 
 ---
 
-## Token types - service tokens (Vault CLI)
+## Token types - Vault CLI
 
 ```yaml
-vault token --help
 Usage: vault token <subcommand> [options] [args]
 
   This command groups subcommands for interacting with tokens. Users can
@@ -87,15 +99,6 @@ Usage: vault token <subcommand> [options] [args]
   Renew a token:
 
       $ vault token renew 96ddf4bc-d217-f3ba-f9bd-017055595017
-
-  Please see the individual subcommand help for detailed usage information.
-
-Subcommands:
-    capabilities    Print capabilities of a token on a path
-    create          Create a new token
-    lookup          Display information about a token
-    renew           Renew a token lease
-    revoke          Revoke a token and its children
 ```
 
 ---
@@ -110,14 +113,20 @@ But they lack flexibility and features of service tokens.
 
 ---
 
-## Token - leases
+## Token leases - service token
 
+Leases created by service tokens (including child tokens' leases) are tracked along with the service token and revoked when the token expires.
 
 ---
 
-## Audit logs
+## Token leases - batch token
 
+---
 
+## Logs
+
+- Audit logs
+- Operational logs
 
 ----
 
@@ -130,7 +139,6 @@ Policies describe *permissions* of a Vault token.
 ----
 
 ## Policies templating
-
 
 
 ----
@@ -151,7 +159,6 @@ Policies describe *permissions* of a Vault token.
 ---
 
 ## Secret engines (dynamic)
-
 
 
 ---
