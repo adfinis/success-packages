@@ -1,3 +1,10 @@
-.reveal pre code {
-    max-height: 600px;
+:root {
+    --r-main-font-size: 30px;
+    --r-heading1-size: 3.77em;
+    --r-heading2-size: 2.11em;
+    --r-heading3-size: 1.55em;
+}
+
+.reveal .code-wrapper code {
+    max-height: 800px;
 }
