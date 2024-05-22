@@ -8,5 +8,5 @@ Content available [here](https://adfinis.github.io/success-packages/index/#/).
 
 It's possible to generate the **reveal-md** slides locally for testing, run:
 ``` sh
-for file in *.md ; do /usr/local/bin/reveal-md --static output/"${file%.*}" "${file}" ; done
+for file in *.md ; do reveal-md --static output/"${file%.*}" "${file}" ; done
 ```
