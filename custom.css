@@ -3,8 +3,5 @@
     --r-heading1-size: 3.77em;
     --r-heading2-size: 2.11em;
     --r-heading3-size: 1.55em;
-}
-
-.reveal .code-wrapper code {
-    max-height: 800px;
+    --r-heading4-size: 1em;
 }
