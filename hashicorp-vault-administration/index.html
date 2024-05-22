@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -11,30 +11,22 @@
     <link rel="stylesheet" href="./dist/theme/black.css" id="theme" />
     <link rel="stylesheet" href="./css/highlight/base16/zenburn.css" />
 
+
   </head>
   <body>
     <div class="reveal">
-      <div class="slides">
-        <section data-markdown data-separator="\r?\n---\r?\n" data-separator-vertical="\r?\n----\r?\n">
-          <textarea data-template>
-            
+      <div class="slides"><section  data-markdown><script type="text/template">
 
 # Vault Administration
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 A guide that goes deeper into configuring HashiCorp Vault.
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ## Introduction
 
 - Who am I?
 - Who/what is Adfinis?
 - Who are you?
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ## Topics
 
 - Tokens
@@ -48,9 +40,7 @@ A guide that goes deeper into configuring HashiCorp Vault.
 - Configuration
   - CLI
   - Terraform
-
----
-
+</script></section><section ><section data-markdown><script type="text/template">
 ## Vault
 
 A tool to manage *secrets*, typically for *systems*.
@@ -58,9 +48,7 @@ A tool to manage *secrets*, typically for *systems*.
 > Secrets: Anything sensitive; credentials, API keys, SSL keys, etc.
 
 > Systems: An application like Tomcat, CI, k8s, etc.
-
-----
-
+</script></section><section data-markdown><script type="text/template">
 ## Tokens
 
 Tokens are the core method for **authentication** of clients within Vault.
@@ -68,9 +56,7 @@ Tokens are the core method for **authentication** of clients within Vault.
 > Nearly all requests to Vault must be accompanied by a token.
 
 Tokens are authenticated by an **auth method**.
-
----
-
+</script></section></section><section  data-markdown><script type="text/template">
 ## Token types - Service and Batch
 
 Two main types of Vault tokens: 
@@ -79,23 +65,17 @@ Two main types of Vault tokens:
 |:-----------|:-----------:|:------------:|
 | Service    | hv**s**.xxx |              |
 | Batch      | hv**b**.xxx |              |
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ## Token types - Recovery Token
 
 
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ## Token types - Service Tokens
 
 Vault persists the service tokens in its storage backend.
 
 You can renew a service token or revoke it as necessary.
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ## Token types - Vault CLI
 
 ```yaml
@@ -116,9 +96,7 @@ Usage: vault token <subcommand> [options] [args]
 
       $ vault token renew 96ddf4bc-d217-f3ba-f9bd-017055595017
 ```
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ## Token types - batch tokens
 
 Vault does not persist the batch tokens.
@@ -126,73 +104,46 @@ Vault does not persist the batch tokens.
 They carry minimal information to perform Vault actions, making them lightweight and scalable.
 
 But they lack flexibility and features of service tokens.
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ## Token leases - service token
 
 Leases created by service tokens (including child tokens' leases) are tracked along with the service token and revoked when the token expires.
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ## Token leases - batch token
-
----
-
+</script></section><section ><section data-markdown><script type="text/template">
 ## Logs
 
 - Audit logs
 - Operational logs
-
-----
-
+</script></section><section data-markdown><script type="text/template">
 ## Policies
 
 Tokens are mapped to *policies*.
 
 Policies describe *permissions* of a Vault token.
-
-----
-
+</script></section><section data-markdown><script type="text/template">
 ## Policies templating
 
-
-----
-
+</script></section><section data-markdown><script type="text/template">
 ## Terraform configuration
 
-
-----
-
+</script></section><section data-markdown><script type="text/template">
 ## Auth engines
 
-
----
-
+</script></section></section><section  data-markdown><script type="text/template">
 ## Secret engines (static)
 
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ## Secret engines (dynamic)
 
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ## Questions
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ## Thanks
-
-          </textarea>
-        </section>
-      </div>
+</script></section></div>
     </div>
 
     <script src="./dist/reveal.js"></script>
-
-    <script src="./mermaid/dist/mermaid.min.js"></script>
 
     <script src="./plugin/markdown/markdown.js"></script>
     <script src="./plugin/highlight/highlight.js"></script>
@@ -220,10 +171,6 @@ Policies describe *permissions* of a Vault token.
         history: true,
         center: true,
         transition: 'default', // none/fade/slide/convex/concave/zoom
-        slideNumber: true,
-        highlight: {
-          highlightOnLoad: false
-        },
         plugins: [
           RevealMarkdown,
           RevealHighlight,
@@ -236,26 +183,12 @@ Policies describe *permissions* of a Vault token.
       // options from URL query string
       var queryOptions = Reveal().getQueryHash() || {};
 
-      var options = extend(defaultOptions, {"width":1400,"height":700,"_":["hashicorp-vault-administration.md"],"static":"output/hashicorp-vault-administration"}, queryOptions);
+      var options = extend(defaultOptions, {"width":1400,"height":700}, queryOptions);
     </script>
 
 
     <script>
       Reveal.initialize(options);
-      Reveal.addEventListener('ready', function (event) {
-        const blocks = Reveal.getRevealElement().querySelectorAll('pre code:not(.mermaid)');
-        const hlp = Reveal.getPlugin('highlight');
-        blocks.forEach(hlp.highlightBlock);
-      });
-    </script>
-
-    <script>
-      const mermaidOptions = extend({ startOnLoad: false }, {});
-      mermaid.startOnLoad = false;
-      mermaid.initialize(mermaidOptions);
-      const cb = function (event) { mermaid.init(mermaidOptions, '.stack.present>.present pre code.mermaid'); };
-      Reveal.addEventListener('ready', cb);
-      Reveal.addEventListener('slidetransitionend', cb);
     </script>
   </body>
 </html>
