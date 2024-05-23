@@ -1,6 +1,7 @@
 ---
 title: Vault operations
-
+theme: night
+css: custom.css
 ---
 
 # Vault operations

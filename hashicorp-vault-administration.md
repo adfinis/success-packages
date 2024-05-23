@@ -1,7 +1,7 @@
 ---
 title: Vault administration
-css: custom.css
 theme: night
+css: custom.css
 ---
 
 # Vault Administration
