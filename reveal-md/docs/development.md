@@ -22,4 +22,4 @@ We are using [reveal-md](https://github.com/webpro/reveal-md), which is a fork o
 
 You can configure the behaviour of the presentations by placing configuration options in `reveal.json` and/or `reveal-md.json`. If those files are blank, it means no configuration is currently active and applied to (all) presentations.
 
-You can choose to add configuration to each individual presentation. For example, by manually embedding `custom.css` in the presentation. Take the header of `hashicorp-vault-administration.md` as an example.
+You can choose to add configuration to each individual presentation. For example, by manually embedding `reveal-md/css/custom.css` in the presentation. Take any `*.md` file as an example.

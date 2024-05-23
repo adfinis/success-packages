@@ -1,7 +1,7 @@
 ---
 title: Vault administration
 theme: night
-css: assets/reveal-md/css/custom-night.css
+css: reveal-md/css/custom-night.css
 ---
 
 # Vault Administration
