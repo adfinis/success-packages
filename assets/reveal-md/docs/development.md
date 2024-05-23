@@ -2,7 +2,7 @@
 
 Make sure to locally install the same version of `reveal-md` as present in `.github/workflows/revealmd.yaml`.
 
-At time of writing, run: `npm install -g reveal-md@5.3.4`.
+At time of writing, run: `npm install -g reveal-md@5.5.4`.
 
 It's possible to generate the **reveal-md** slides locally for testing, run:
 

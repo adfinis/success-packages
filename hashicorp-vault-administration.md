@@ -1,7 +1,7 @@
 ---
 title: Vault administration
 theme: night
-css: assets/css/night.css
+css: assets/reveal-md/css/night.css
 ---
 
 # Vault Administration
@@ -67,8 +67,9 @@ Two main types of Vault tokens:
 
 #### 2/5 Token types - recovery token
 
-- Then there's also a **recovery** token
-- Only used in a special recovery [scenario](https://developer.hashicorp.com/vault/docs/concepts/recovery-mode)
+- Then there's also a special **recovery** token
+- It's only used in case a recovery scenario it needed
+- Look into [tutorial](https://developer.hashicorp.com/vault/docs/concepts/recovery-mode) if you want to learn more
 
 ----
 
@@ -79,7 +80,7 @@ Two main types of Vault tokens:
 
 ----
 
-#### 4/5 Token performance cost
+#### 4/5 Token types - performance cost
 
 - **Service tokens**: heavyweight; multiple storage writes per token creation
 - **Batch tokens**: lightweight; no storage cost for token creation
@@ -87,6 +88,9 @@ Two main types of Vault tokens:
 ----
 
 #### 5/5 Token types - Vault CLI
+
+Experiment:
+- `cd assets/
 
 ```yaml
 Usage: vault token <subcommand> [options] [args]
@@ -203,7 +207,7 @@ path "<PATH>" {
 These are the policy [capabilities](https://developer.hashicorp.com/vault/docs/concepts/policies#capabilities):
 
 | Capability | Description                                                  |
-|:----------:|:------------------------------------------------------------:|
+|------------|--------------------------------------------------------------|
 | create     | Allows **creating** data at the given path                   |
 | read       | Allows **reading** the data at the given path                |
 | update     | Allows **changing** the data at the given path               |
