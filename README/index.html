@@ -31,7 +31,19 @@ It's possible to generate the **reveal-md** slides locally for testing, run:
 ```sh
 for file in *.md ; do reveal-md --static output/"${file%.*}" "${file}" ; done
 ```
-</script></section></div>
+
+You can also export a single presentation, for example:
+```sh
+reveal-md --static output/hashicorp-vault-administration hashicorp-vault-administration.md
+```
+
+## Configuration
+
+We are using [reveal-md](https://github.com/webpro/reveal-md), which is a fork of [reveal-js](https://revealjs.com/) that adds improvements on top.
+
+You can configure the behaviour of the presentations by setting configuration in `reveal.json` and `reveal-md.json`. If those files are blank, it means no configuration is currently active and applied to the presentations.
+
+You can choose to manually embed `custom.css` in the presentation to adapt the presentation. Look in the header of `hashicorp-vault-administration.md` on how to embed the file on output.</script></section></div>
     </div>
 
     <script src="./dist/reveal.js"></script>

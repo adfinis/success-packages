@@ -8,9 +8,10 @@
     <link rel="shortcut icon" href="./favicon.ico" />
     <link rel="stylesheet" href="./dist/reset.css" />
     <link rel="stylesheet" href="./dist/reveal.css" />
-    <link rel="stylesheet" href="./dist/theme/black.css" id="theme" />
+    <link rel="stylesheet" href="./dist/theme/night.css" id="theme" />
     <link rel="stylesheet" href="./css/highlight/base16/zenburn.css" />
 
+    <link rel="stylesheet" href="./_assets/custom.css" />
 
   </head>
   <body>
@@ -19,64 +20,70 @@
 
 # Vault Administration
 </script></section><section  data-markdown><script type="text/template">
-A guide that goes deeper into configuring HashiCorp Vault.
-</script></section><section  data-markdown><script type="text/template">
-## Introduction
+A guide that goes deeper into
 
-- Who am I?
-- Who/what is Adfinis?
-- Who are you?
+HashiCorp Vault Administration
 </script></section><section  data-markdown><script type="text/template">
-## Topics
+## Topics 1/2
 
 - Tokens
   - Token types
   - Token leases
-- Logs
-  - Audit
-  - Operational
 - Policies
-  - Templating
+  - Writing policies
+  - Templating policies
+</script></section><section  data-markdown><script type="text/template">
+## Topics 2/2
+
+- Engines
+  - Auth engines
+  - Secrets engines
 - Configuration
   - CLI
   - Terraform
+</script></section><section  data-markdown><script type="text/template">
+## Tokens 
+
+Tokens are the core method for **authentication** of clients within Vault
+
+> Nearly all requests to Vault must be accompanied by a token
+
+Tokens are authenticated by an **auth method**
 </script></section><section ><section data-markdown><script type="text/template">
-## Vault
+### Token types
 
-A tool to manage *secrets*, typically for *systems*.
+Vault token types
 
-> Secrets: Anything sensitive; credentials, API keys, SSL keys, etc.
-
-> Systems: An application like Tomcat, CI, k8s, etc.
+Dive deeper ↓
 </script></section><section data-markdown><script type="text/template">
-## Tokens
-
-Tokens are the core method for **authentication** of clients within Vault.
-
-> Nearly all requests to Vault must be accompanied by a token.
-
-Tokens are authenticated by an **auth method**.
-</script></section></section><section  data-markdown><script type="text/template">
-## Token types - Service and Batch
+#### 1/5 Token types - service and batch tokens
 
 Two main types of Vault tokens: 
 
-| Token type | Example     |  Description |
-|:-----------|:-----------:|:------------:|
-| Service    | hv**s**.xxx |              |
-| Batch      | hv**b**.xxx |              |
-</script></section><section  data-markdown><script type="text/template">
-## Token types - Recovery Token
+| Token type | Example     |
+|:----------:|:-----------:|
+| Service    | hv**s**.xxx |
+| Batch      | hv**b**.xxx |
+</script></section><section data-markdown><script type="text/template">
+#### 2/5 Token types - recovery token
 
+- Then there's also a **recovery** token
 
-</script></section><section  data-markdown><script type="text/template">
-## Token types - Service Tokens
+- Only used in a special recovery [scenario](https://developer.hashicorp.com/vault/docs/concepts/recovery-mode)
+</script></section><section data-markdown><script type="text/template">
+#### 3/5 Token types - service tokens
 
-Vault persists the service tokens in its storage backend.
+- **Service token**: persisted, can be renewed, revoked, and create children
 
-You can renew a service token or revoke it as necessary.
-</script></section><section  data-markdown><script type="text/template">
-## Token types - Vault CLI
+- **Batch tokens**: binary large objects (blobs), **NOT** persisted (ephemeral)
+</script></section><section data-markdown><script type="text/template">
+#### 4/5 Token performance cost
+
+- **Service tokens**: heavyweight; multiple storage writes per token creation
+
+- **Batch tokens**: lightweight; no storage cost for token creation
+</script></section><section data-markdown><script type="text/template">
+#### 5/5 Token types - Vault CLI
 
 ```yaml
 Usage: vault token <subcommand> [options] [args]
@@ -96,47 +103,196 @@ Usage: vault token <subcommand> [options] [args]
 
       $ vault token renew 96ddf4bc-d217-f3ba-f9bd-017055595017
 ```
-</script></section><section  data-markdown><script type="text/template">
-## Token types - batch tokens
+</script></section></section><section ><section data-markdown><script type="text/template">
+## Token leases
 
-Vault does not persist the batch tokens.
+Vault token leases and expiration
 
-They carry minimal information to perform Vault actions, making them lightweight and scalable.
-
-But they lack flexibility and features of service tokens.
-</script></section><section  data-markdown><script type="text/template">
-## Token leases - service token
-
-Leases created by service tokens (including child tokens' leases) are tracked along with the service token and revoked when the token expires.
-</script></section><section  data-markdown><script type="text/template">
-## Token leases - batch token
-</script></section><section ><section data-markdown><script type="text/template">
-## Logs
-
-- Audit logs
-- Operational logs
+Dive deeper ↓
 </script></section><section data-markdown><script type="text/template">
-## Policies
+### 1/5 Token leases - service tokens
 
-Tokens are mapped to *policies*.
+- Leases created by service tokens are tracked 
 
-Policies describe *permissions* of a Vault token.
+- And revoked when the token expires
 </script></section><section data-markdown><script type="text/template">
-## Policies templating
+#### 2/5 Token leases - service token lifecycle
 
-</script></section><section data-markdown><script type="text/template">
-## Terraform configuration
+- Every non-root token has a time-to-live (TTL).
 
+- When a token expires, Vault automatically revokes it.
 </script></section><section data-markdown><script type="text/template">
-## Auth engines
+#### 3/5 Token leases - service token lifecycle
+
+- If you create a new token, the token you used to create the token becomes the parent token. 
+
+- Once the parent token expires, so do all its children regardless of their own TTLs.
+</script></section><section data-markdown><script type="text/template">
+#### 4/5 Token leases - service token lifecycle
+
+```shell
+    hvs.b519c6aa... (1h)
+    |___ hvs.6a2cf3e7... (4h)
+    |___ hvs.1d3fd4b2... (2h)
+          |___ hvs.794b6f2f... (3h)
+```
+
+- All tokens have a time-to-live (TTL)
+
+- When the top level token expires, all child tokens are revoked
+</script></section><section data-markdown><script type="text/template">
+#### 5/5 Token leases - batch token lifecycle
 
 </script></section></section><section  data-markdown><script type="text/template">
-## Secret engines (static)
+## Policies
 
-</script></section><section  data-markdown><script type="text/template">
-## Secret engines (dynamic)
+- Next topic covers **policies**
 
-</script></section><section  data-markdown><script type="text/template">
+- Tokens are mapped to **policies**
+
+- Policies describe **permissions** attached to a Vault token
+</script></section><section ><section data-markdown><script type="text/template">
+### Writing policies
+
+Vault policies and how to write them
+
+Dive deeper ↓
+</script></section><section data-markdown><script type="text/template">
+#### 1/ Writing policies
+
+- Everything in Vault is path based (path corresponds to Vault API endpoints)
+
+- Policies **grant** or **forbid** access to certain paths and operations
+
+```hcl
+path "<PATH>" {
+  capabilities = [ "<LIST_OF_PERMISSIONS>" ]
+}
+```
+</script></section><section data-markdown><script type="text/template">
+#### 2/ Writing policies - root policy
+
+- Root policy is created by default – superuser with all permissions
+
+- The root policy is not visible in the Vault backend
+
+- It can be thought of as (not valid HCL):
+
+```hcl
+path "*" {
+  capabilities = ["create", "read", "update", "delete", "list", "sudo"]
+}
+```
+</script></section><section data-markdown><script type="text/template">
+#### 3/ Writing policies - root policy
+
+- Only use the root token to:
+
+  - Setup initial policies and configurations
+
+  - Handle emergencies where root privilege is needed
+</script></section><section data-markdown><script type="text/template">
+#### 3/ Writing policies - default policy
+
+- The default policy is created by default
+
+- Inspect the contents of the default [policy](http://127.0.0.1:8200/ui/vault/policy/acl/default)
+
+- Contains common permissions around token and backend features
+</script></section><section data-markdown><script type="text/template">
+#### 4/ Writing policies -
+
+</script></section></section><section ><section data-markdown><script type="text/template">
+### Templating policies
+
+Vault policy templating techniques
+
+Dive deeper ↓
+</script></section><section data-markdown><script type="text/template">
+#### 1/ Templating policies - techniques
+
+- Policies can be templated using:
+
+  - Wildcard (*)
+
+  - Single directory (+)
+
+</script></section><section data-markdown><script type="text/template">
+#### 2/ Templating policies - wildcard
+
+</script></section><section data-markdown><script type="text/template">
+#### 3/ Templating policies - single directory
+
+
+</script></section></section><section  data-markdown><script type="text/template">
+## Vault engines
+
+- You can configure Vault with:
+
+  - Auth engines
+
+  - Secrets engines
+</script></section><section ><section data-markdown><script type="text/template">
+## Auth engines
+
+Vault auth engines
+
+Dive deeper ↓
+</script></section><section data-markdown><script type="text/template">
+#### Auth engines - token
+
+- Auth engines authenticate users and applications
+
+- There are various types of auth engines for different systems
+</script></section><section data-markdown><script type="text/template">
+#### Auth engines - username
+</script></section><section data-markdown><script type="text/template">
+## Secret engines
+
+Vault secret engines
+
+Dive deeper ↓
+</script></section><section data-markdown><script type="text/template">
+#### Secret engines (static)
+
+- Stores static data by using a key-value store
+- Think about username password combinations or API keys
+- Access control through policies
+</script></section><section data-markdown><script type="text/template">
+#### Secret engines (dynamic)
+
+- Dynamic secret engines in Vault generate and manage dynamic secrets
+- Think of database credentials and AWS access keys
+- Allows rotating of credentials over time
+</script></section></section><section  data-markdown><script type="text/template">
+## Configuration
+
+- You can configure Vault using different approaches
+
+- [UI](https://developer.hashicorp.com/vault/tutorials/getting-started-ui) / [API](https://developer.hashicorp.com/vault/api-docs) / [CLI](https://developer.hashicorp.com/vault/docs/commands) / [Terraform](https://registry.terraform.io/providers/hashicorp/vault) / [Python](https://hvac.readthedocs.io/)
+
+- We will cover the CLI and Terraform approach
+</script></section><section ><section data-markdown><script type="text/template">
+### CLI configuration
+
+How to configure Vault using the CLI
+
+Dive deeper ↓
+</script></section><section data-markdown><script type="text/template">
+#### 1/ CLI configuration
+</script></section><section data-markdown><script type="text/template">
+#### 2/ CLI configuration
+</script></section></section><section ><section data-markdown><script type="text/template">
+### Terraform configuration
+
+How to configure Vault using Terraform
+
+Dive deeper ↓
+</script></section><section data-markdown><script type="text/template">
+#### 1/ Terraform configuration
+</script></section><section data-markdown><script type="text/template">
+#### 2/ Terraform configuration
+</script></section></section><section  data-markdown><script type="text/template">
 ## Questions
 </script></section><section  data-markdown><script type="text/template">
 ## Thanks
