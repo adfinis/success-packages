@@ -160,7 +160,7 @@ Dive deeper ↓
 ## Policies
 
 - Next topic covers **policies**
-- Tokens are mapped to **policies**
+- **Tokens** are mapped to **policies**
 - Policies describe **permissions** attached to a Vault token
 
 ---
@@ -200,7 +200,7 @@ path "<PATH>" {
 
 #### 3/ Writing policies
 
-These are the policy [capabilities](https://developer.hashicorp.com/vault/docs/concepts/policies#capabilities)
+These are the policy [capabilities](https://developer.hashicorp.com/vault/docs/concepts/policies#capabilities):
 
 | Capability | Description                                                  |
 |:----------:|:------------------------------------------------------------:|
@@ -257,8 +257,8 @@ path "*" {
 #### 7/ Writing policies - default policy
 
 - The default policy is always included
-- Inspect the contents of the default [policy](http://127.0.0.1:8200/ui/vault/policy/acl/default)
 - Contains common permissions around token and backend features
+- Take a moment to study the contents of the default [policy](http://127.0.0.1:8200/ui/vault/policy/acl/default)
 
 ---
 
@@ -280,7 +280,7 @@ Dive deeper ↓
 
 #### 2/ Templating policies - wildcard
 
-- ACL policy path supports wildcard ("*") at the end of the path
+ACL policy path supports wildcard (`*`) at the end of the path
 
 ```hcl
 path "secret/team-*" { 
@@ -288,21 +288,21 @@ path "secret/team-*" {
 }
 ```
 
-- Matches any path starting with `"secret/team-"`:
-  - `secret/team-security`
-  - `secret/team-a/project`
+Matches any path starting with `"secret/team-"`:
+- `secret/team-security`
+- `secret/team-a/project`
 
 ----
 
 #### 3/ Templating policies - single directory
 
-- Supports wildcard matching for a single directory in path
+Supports wildcard matching for a single directory in path
 
 ```hcl
 path "secret/app/+/dev" { ... } < matches 'secret/app/v1/dev'
 ```
 
-- You can also combine `+` and `*`
+You can also combine both plus symbol `+` and wildcard `*`
 
 ```hcl
 path "secret/app/+/team-*" { ... } < matches 'secret/app/v1/team-a'
@@ -312,13 +312,13 @@ path "secret/app/+/team-*" { ... } < matches 'secret/app/v1/team-a'
 
 ## Vault engines
 
-- You can configure Vault with:
+- You can configure Vault using:
   - Auth engines
   - Secrets engines
 
 ---
 
-## Auth engines
+### Auth engines
 
 Vault auth engines
 
@@ -326,18 +326,54 @@ Dive deeper ↓
 
 ----
 
-#### Auth engines - token
+#### 1/ Auth engines
 
 - Auth engines authenticate users and applications
-- There are various types of auth engines for different systems
+- Many different auth engines exist
+- We will cover the most common auth engines
 
 ----
 
-#### Auth engines - username
+#### 2/ Auth engines - token
+
+- The [token](https://developer.hashicorp.com/vault/docs/auth/token) auth method is the most basic engine
+- Automatically available by default at `/auth/token`
+- Allows users to:
+  - authenticate using a token
+  - create new tokens
+  - revoke secrets by token
+  - and more
 
 ----
 
-## Secret engines
+#### 3/ Auth engines - userpass
+
+- Next up, the [userpass](https://developer.hashicorp.com/vault/docs/auth/userpass) auth engine
+- Simply allows you to use standard users (with passwords) in Vault
+- Usually used as an emergency backup auth method (in case dynamic auth engine fails)
+
+----
+
+#### 4/ Auth engines - cloud auth methods
+
+- Use your pre-existing users in cloud platforms to authenticate:
+  - [AWS IAM](https://developer.hashicorp.com/vault/docs/auth/aws)
+  - [Azure AD](https://developer.hashicorp.com/vault/docs/auth/azure)
+  - [Gcloud IAM](https://developer.hashicorp.com/vault/docs/auth/gcp)
+  - [OCI Identity](https://developer.hashicorp.com/vault/docs/auth/oci)
+
+----
+
+#### 5/ Auth engines - common protocols
+
+- Or use common protocols:
+  - [LDAP](https://developer.hashicorp.com/vault/docs/auth/ldap)
+  - [JWT/OIDC](https://developer.hashicorp.com/vault/docs/auth/jwt)
+  - [SAML (enterprise feature)](https://developer.hashicorp.com/vault/docs/auth/saml)
+
+---
+
+### Secret engines
 
 Vault secret engines
 
@@ -345,7 +381,7 @@ Dive deeper ↓
 
 ----
 
-#### Secret engines (static)
+#### 1/ Secret engines (static)
 
 - Stores static data by using a key-value store
 - Think about username password combinations or API keys
@@ -353,7 +389,7 @@ Dive deeper ↓
 
 ----
 
-#### Secret engines (dynamic)
+#### 2/ Secret engines (dynamic)
 
 - Dynamic secret engines in Vault allow rotating of credentials over time
 - Database credentials and cloud provider access keys
