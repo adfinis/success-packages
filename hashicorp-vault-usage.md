@@ -1,7 +1,7 @@
 ---
 title: Vault usage
 theme: night
-css: custom.css
+css: assets/css/night.css
 ---
 
 # Vault usage

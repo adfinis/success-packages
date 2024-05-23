@@ -1,7 +1,7 @@
 ---
 title: Vault operations
 theme: night
-css: custom.css
+css: assets/css/night.css
 ---
 
 # Vault operations
