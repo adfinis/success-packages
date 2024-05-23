@@ -17,7 +17,7 @@ jobs:
         run: |
           npm update
           npm install --include=optional --location=global reveal-md@5.5.2
-          for file in *.md ; do /usr/local/bin/reveal-md --static output/"${file%.*}" -css reveal-md/css/*.css "${file}" ; done
+          for file in *.md ; do /usr/local/bin/reveal-md --static output/"${file%.*}" --assets-dir reveal-md -css reveal-md/css/*.css "${file}" ; done
       - name: deploy
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
