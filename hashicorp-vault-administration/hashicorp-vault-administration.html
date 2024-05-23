@@ -68,19 +68,16 @@ Two main types of Vault tokens:
 #### 2/5 Token types - recovery token
 
 - Then there's also a **recovery** token
-
 - Only used in a special recovery [scenario](https://developer.hashicorp.com/vault/docs/concepts/recovery-mode)
 </script></section><section data-markdown><script type="text/template">
 #### 3/5 Token types - service tokens
 
 - **Service token**: persisted, can be renewed, revoked, and create children
-
 - **Batch tokens**: binary large objects (blobs), **NOT** persisted (ephemeral)
 </script></section><section data-markdown><script type="text/template">
 #### 4/5 Token performance cost
 
 - **Service tokens**: heavyweight; multiple storage writes per token creation
-
 - **Batch tokens**: lightweight; no storage cost for token creation
 </script></section><section data-markdown><script type="text/template">
 #### 5/5 Token types - Vault CLI
@@ -113,19 +110,16 @@ Dive deeper ↓
 ### 1/5 Token leases - service tokens
 
 - Leases created by service tokens are tracked 
-
 - And revoked when the token expires
 </script></section><section data-markdown><script type="text/template">
 #### 2/5 Token leases - service token lifecycle
 
 - Every non-root token has a time-to-live (TTL).
-
 - When a token expires, Vault automatically revokes it.
 </script></section><section data-markdown><script type="text/template">
 #### 3/5 Token leases - service token lifecycle
 
 - If you create a new token, the token you used to create the token becomes the parent token. 
-
 - Once the parent token expires, so do all its children regardless of their own TTLs.
 </script></section><section data-markdown><script type="text/template">
 #### 4/5 Token leases - service token lifecycle
@@ -138,7 +132,6 @@ Dive deeper ↓
 ```
 
 - All tokens have a time-to-live (TTL)
-
 - When the top level token expires, all child tokens are revoked
 </script></section><section data-markdown><script type="text/template">
 #### 5/5 Token leases - batch token lifecycle
@@ -147,9 +140,7 @@ Dive deeper ↓
 ## Policies
 
 - Next topic covers **policies**
-
-- Tokens are mapped to **policies**
-
+- **Tokens** are mapped to **policies**
 - Policies describe **permissions** attached to a Vault token
 </script></section><section ><section data-markdown><script type="text/template">
 ### Writing policies
@@ -161,7 +152,6 @@ Dive deeper ↓
 #### 1/ Writing policies
 
 - Everything in Vault is path based (path corresponds to Vault API endpoints)
-
 - Policies **grant** or **forbid** access to certain paths and operations
 
 ```hcl
@@ -170,12 +160,50 @@ path "<PATH>" {
 }
 ```
 </script></section><section data-markdown><script type="text/template">
-#### 2/ Writing policies - root policy
+#### 2/ Writing policies
 
-- Root policy is created by default – superuser with all permissions
+- Policies include the following permissions:
 
+```hcl
+path "<PATH>" {
+  capabilities = ["create", "read", "update", "delete", "list", "sudo"]
+}
+```
+</script></section><section data-markdown><script type="text/template">
+#### 3/ Writing policies
+
+These are the policy [capabilities](https://developer.hashicorp.com/vault/docs/concepts/policies#capabilities):
+
+| Capability | Description                                                  |
+|:----------:|:------------------------------------------------------------:|
+| create     | Allows **creating** data at the given path                   |
+| read       | Allows **reading** the data at the given path                |
+| update     | Allows **changing** the data at the given path               |
+| delete     | Allows **deleting** the data at the given path               |
+| list       | Allows **listing** values at the given path                  |
+| patch      | Allows partial **updates** to the data at a given path       |
+| sudo       | Allows access to paths that are **root-protected**           |
+| deny       | **Disallows** access (takes precedence over everything else) |
+</script></section><section data-markdown><script type="text/template">
+#### 4/ Writing policies
+
+These are the equivalent HTTP verbs to use when creating API requests
+
+| Capability | HTTP equivalent |
+|:----------:|:---------------:|
+| create     | POST/PUT        |
+| read       | GET             |
+| update     | POST/PUT        |
+| delete     | DELETE          |
+| list       | LIST            |
+| patch      | PATCH           |
+| sudo       | -               |
+| deny       | -               |
+</script></section><section data-markdown><script type="text/template">
+#### 5/ Writing policies - root policy
+
+- Root policy is always included – superuser with all permissions
 - The root policy is not visible in the Vault backend
-
 - It can be thought of as (not valid HCL):
 
 ```hcl
@@ -184,24 +212,17 @@ path "*" {
 }
 ```
 </script></section><section data-markdown><script type="text/template">
-#### 3/ Writing policies - root policy
+#### 6/ Writing policies - root policy
 
 - Only use the root token to:
-
   - Setup initial policies and configurations
-
   - Handle emergencies where root privilege is needed
 </script></section><section data-markdown><script type="text/template">
-#### 3/ Writing policies - default policy
+#### 7/ Writing policies - default policy
 
-- The default policy is created by default
-
-- Inspect the contents of the default [policy](http://127.0.0.1:8200/ui/vault/policy/acl/default)
-
+- The default policy is always included
 - Contains common permissions around token and backend features
-</script></section><section data-markdown><script type="text/template">
-#### 4/ Writing policies -
-
+- Take a moment to study the contents of the default [policy](http://127.0.0.1:8200/ui/vault/policy/acl/default)
 </script></section></section><section ><section data-markdown><script type="text/template">
 ### Templating policies
 
@@ -212,65 +233,107 @@ Dive deeper ↓
 #### 1/ Templating policies - techniques
 
 - Policies can be templated using:
-
-  - Wildcard (*)
-
-  - Single directory (+)
-
+  - Wildcard (`*`)
+  - Single directory (`+`)
 </script></section><section data-markdown><script type="text/template">
 #### 2/ Templating policies - wildcard
 
+ACL policy path supports wildcard (`*`) at the end of the path
+
+```hcl
+path "secret/team-*" { 
+  capabilities = ["read", "list"]
+}
+```
+
+Matches any path starting with `"secret/team-"`:
+- `secret/team-security`
+- `secret/team-a/project`
 </script></section><section data-markdown><script type="text/template">
 #### 3/ Templating policies - single directory
 
+Supports wildcard matching for a single directory in path
 
+```hcl
+path "secret/app/+/dev" { ... } < matches 'secret/app/v1/dev'
+```
+
+You can also combine both plus symbol `+` and wildcard `*`
+
+```hcl
+path "secret/app/+/team-*" { ... } < matches 'secret/app/v1/team-a'
+```
 </script></section></section><section  data-markdown><script type="text/template">
 ## Vault engines
 
-- You can configure Vault with:
-
+- You can configure Vault using:
   - Auth engines
-
   - Secrets engines
 </script></section><section ><section data-markdown><script type="text/template">
-## Auth engines
+### Auth engines
 
 Vault auth engines
 
 Dive deeper ↓
 </script></section><section data-markdown><script type="text/template">
-#### Auth engines - token
+#### 1/ Auth engines
 
 - Auth engines authenticate users and applications
+- Many different auth engines exist
+- We will cover the most common auth engines
+</script></section><section data-markdown><script type="text/template">
+#### 2/ Auth engines - token
 
-- There are various types of auth engines for different systems
+- The [token](https://developer.hashicorp.com/vault/docs/auth/token) auth method is the most basic engine
+- Automatically available by default at `/auth/token`
+- Allows users to:
+  - authenticate using a token
+  - create new tokens
+  - revoke secrets by token
+  - and more
 </script></section><section data-markdown><script type="text/template">
-#### Auth engines - username
+#### 3/ Auth engines - userpass
+
+- Next up, the [userpass](https://developer.hashicorp.com/vault/docs/auth/userpass) auth engine
+- Simply allows you to use standard users (with passwords) in Vault
+- Usually used as an emergency backup auth method (in case dynamic auth engine fails)
 </script></section><section data-markdown><script type="text/template">
-## Secret engines
+#### 4/ Auth engines - cloud auth methods
+
+- Use your pre-existing users in cloud platforms to authenticate:
+  - [AWS IAM](https://developer.hashicorp.com/vault/docs/auth/aws)
+  - [Azure AD](https://developer.hashicorp.com/vault/docs/auth/azure)
+  - [Gcloud IAM](https://developer.hashicorp.com/vault/docs/auth/gcp)
+  - [OCI Identity](https://developer.hashicorp.com/vault/docs/auth/oci)
+</script></section><section data-markdown><script type="text/template">
+#### 5/ Auth engines - common protocols
+
+- Or use common protocols:
+  - [LDAP](https://developer.hashicorp.com/vault/docs/auth/ldap)
+  - [JWT/OIDC](https://developer.hashicorp.com/vault/docs/auth/jwt)
+  - [SAML (enterprise feature)](https://developer.hashicorp.com/vault/docs/auth/saml)
+</script></section></section><section ><section data-markdown><script type="text/template">
+### Secret engines
 
 Vault secret engines
 
 Dive deeper ↓
 </script></section><section data-markdown><script type="text/template">
-#### Secret engines (static)
+#### 1/ Secret engines (static)
 
 - Stores static data by using a key-value store
 - Think about username password combinations or API keys
 - Access control through policies
 </script></section><section data-markdown><script type="text/template">
-#### Secret engines (dynamic)
+#### 2/ Secret engines (dynamic)
 
-- Dynamic secret engines in Vault generate and manage dynamic secrets
-- Think of database credentials and AWS access keys
-- Allows rotating of credentials over time
+- Dynamic secret engines in Vault allow rotating of credentials over time
+- Database credentials and cloud provider access keys
 </script></section></section><section  data-markdown><script type="text/template">
 ## Configuration
 
 - You can configure Vault using different approaches
-
 - [UI](https://developer.hashicorp.com/vault/tutorials/getting-started-ui) / [API](https://developer.hashicorp.com/vault/api-docs) / [CLI](https://developer.hashicorp.com/vault/docs/commands) / [Terraform](https://registry.terraform.io/providers/hashicorp/vault) / [Python](https://hvac.readthedocs.io/)
-
 - We will cover the CLI and Terraform approach
 </script></section><section ><section data-markdown><script type="text/template">
 ### CLI configuration
