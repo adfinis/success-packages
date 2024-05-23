@@ -237,7 +237,7 @@ NOTE: Most Vault installations have the root-token **NOT** revoked, which is a s
 
 ## Unsealing 1/6
 
-Every time Vault starts, it needs to be unseal. These are typical situations when unsealing is required:
+Every time Vault starts, it needs to be unsealed. These are typical situations when unsealing is required:
 
 - Reboot
 - Restart
