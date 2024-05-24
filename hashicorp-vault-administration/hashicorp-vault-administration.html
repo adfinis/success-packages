@@ -153,7 +153,7 @@ Vault token leases and expiration
 
 Dive deeper ↓
 </script></section><section data-markdown><script type="text/template">
-### 1/4 Token leases - service token lifecycle
+### 1/7 Token leases - service token lifecycle
 
 > Every **non-root** token has a *time-to-live* (TTL)
 
@@ -168,7 +168,7 @@ hvs.b519c6aa... (1h)
       |___ hvs.794b6f2f... (3h)
 ```
 </script></section><section data-markdown><script type="text/template">
-#### 2/6 Token leases - inspect leases in the UI
+#### 2/7 Token leases - inspect leases in the UI
 
 Terminal tab:
 ```sh
@@ -181,7 +181,7 @@ Web tab:
 - Go to Access -> Leases -> Auth -> Token -> Create
 - Or visit this [link](http://127.0.0.1:8200/ui/vault/access/leases/list/auth/token/create/)
 </script></section><section data-markdown><script type="text/template">
-#### 3/6 Token leases - renewing service tokens
+#### 3/7 Token leases - renewing service tokens
 
 Service tokens can be renewed:
 ```sh
@@ -198,7 +198,7 @@ token_policies       ["default"]
 identity_policies    []
 policies             ["default"]
 ```</script></section><section data-markdown><script type="text/template">
-#### 4/6 Token leases - renewing batch tokens
+#### 4/7 Token leases - batch token limitations
 
 While batch tokens cannot be renewed:
 ```sh
@@ -216,7 +216,7 @@ identity_policies    []
 policies             ["default"]
 ```
 </script></section><section data-markdown><script type="text/template">
-#### 5/6 Token leases - batch token limitations
+#### 5/7 Token leases - batch token limitations
 
 Renewing batch tokens is not possible!
 ```sh
@@ -241,6 +241,46 @@ Code: 400. Errors:
 
 * batch tokens cannot be revoked
 ```
+</script></section><section data-markdown><script type="text/template">
+#### 6/7 Token leases - orphan tokens
+
+- Create orphan tokens if the token hierarchy is not desirable
+- Orphan tokens are not children of their parent (thus do not expire if parent expires) 
+- But still expire when their own max TTL is reached
+- Root or sudo users have the ability to generate orphan tokens
+
+```json
+path "auth/token/create-orphan" {
+  capabilities = [ "create", "read", "update", "delete", "sudo" ]
+}
+```
+</script></section><section data-markdown><script type="text/template">
+#### 7/7 Token leases - orphan tokens
+
+```sh
+vault token create -policy="default" -orphan # create the token
+vault token lookup hvs.CAESIPinkhdj8YEESf... # lookup the token values
+
+Key                 Value
+---                 -----
+accessor            K7ztauQNHP9Xi5ruuz8f5z8R
+creation_time       1716546740
+creation_ttl        768h
+display_name        token
+entity_id           n/a
+expire_time         2024-06-25T10:32:20.005349467Z
+explicit_max_ttl    0s
+id                  hvs.CAESIPinkhdj8YEESf...
+issue_time          2024-05-24T10:32:20.005356217Z
+meta                <nil>
+num_uses            0
+orphan              true                    < orphan = true
+path                auth/token/create
+policies            [default]
+renewable           true
+ttl                 767h59m21s
+type                service
+```
 </script></section></section><section  data-markdown><script type="text/template">
 ## Policies
 
@@ -258,30 +298,33 @@ Vault policies and how to write them
 
 Dive deeper ↓
 </script></section><section data-markdown><script type="text/template">
-#### 1/8 Writing policies
+#### 1/8 Writing policies - policy syntax
+
+> Policies are deny by default (no policy = no authorization)
 
 - Everything in Vault is path based (path corresponds to Vault API endpoints)
+- Policies in Vault are written in HCL or JSON [syntax](https://developer.hashicorp.com/vault/docs/concepts/policies#policy-syntax)
+
+```hcl
+path "<PATH>" { # unique path
+  capabilities = ["<PERMISSIONS>"] # list of permissions
+}
+```
+</script></section><section data-markdown><script type="text/template">
+#### 2/8 Writing policies - policy syntax
+
 - Policies **grant** or **forbid** access to certain paths and operations
+- Policies may include all or some of the following ([capabilities](https://developer.hashicorp.com/vault/docs/concepts/policies#capabilities)):
 
 ```hcl
 path "<PATH>" {
-  capabilities = [ "<LIST_OF_PERMISSIONS>" ]
+  capabilities = ["create", "read", "update", "delete", "list", "patch", "sudo", "deny"]
 }
 ```
 </script></section><section data-markdown><script type="text/template">
-#### 2/8 Writing policies
+#### 3/8 Writing policies - capabilities
 
-- Policies may include all or some of the following permissions (capabilities):
-
-```hcl
-path "<PATH>" {
-  capabilities = ["create", "read", "update", "delete", "list", "sudo"]
-}
-```
-</script></section><section data-markdown><script type="text/template">
-#### 3/8 Writing policies
-
-These are the policy [capabilities](https://developer.hashicorp.com/vault/docs/concepts/policies#capabilities), simply explained:
+These are the policy [capabilities](https://developer.hashicorp.com/vault/docs/concepts/policies#capabilities):
 
 | Capability | Description                                                        |
 |------------|--------------------------------------------------------------------|
@@ -293,10 +336,12 @@ These are the policy [capabilities](https://developer.hashicorp.com/vault/docs/c
 | patch      | Allows partial **updates** to the data at a given path (versioned) |
 | sudo       | Allows access to paths that are **root-protected**                 |
 | deny       | **Disallows** access (takes precedence over everything else)       |
-</script></section><section data-markdown><script type="text/template">
-#### 4/8 Writing policies
 
-These are the equivalent HTTP verbs to use when creating API requests
+List of root protected [endpoints](https://developer.hashicorp.com/vault/docs/concepts/policies#root-protected-api-endpoints)
+</script></section><section data-markdown><script type="text/template">
+#### 4/8 Writing policies - HTTP verbs
+
+These are the equivalent HTTP verbs to use when creating API requests:
 
 | Capability | HTTP equivalent |
 |:----------:|:---------------:|
@@ -319,30 +364,36 @@ curl --header "X-Vault-Token: $VAULT_TOKEN" \
 #### 5/8 Writing policies - root policy
 
 - Root policy is always included – superuser with all permissions
-- The root policy is not visible in the Vault backend
-- It can be thought of as (not valid HCL):
+- Root policy is not visible in the Vault backend (open [policies](http://127.0.0.1:8200/ui/vault/policies/acl))
+- Root policy can be thought of as:
 
 ```hcl
-path "*" {
-  capabilities = ["create", "read", "update", "delete", "list", "sudo"]
+path "*" { # allow all paths (not valid HCL)
+  capabilities = ["create", "read", "update", "delete", "list", "patch", "sudo"] # allow all capabilities
 }
 ```
 </script></section><section data-markdown><script type="text/template">
-#### 6/8 Writing policies - root policy
+#### 6/8 Writing policies - root token
 
+- Authenticating with root token should be limited
 - Only use the root token to:
   - Setup initial policies and configurations
   - Handle emergencies where root privilege is needed
 </script></section><section data-markdown><script type="text/template">
 #### 7/8 Writing policies - default policy
 
-- The default policy is always included
+- The default policy is always included after installation
 - Contains common permissions around token and backend features
 - Take a moment to study the contents of the default [policy](http://127.0.0.1:8200/ui/vault/policy/acl/default)
 </script></section><section data-markdown><script type="text/template">
-#### 8/8 Writi
+#### 8/8 Writing policies - print token capabilities
 
+> Usage: vault token capabilities [options] [token] path
 
+```sh
+vault token capabilities hvs.CAESIPinkhdj8YEEzmOP4kxfSfJBZjl1--bbfvPVjB98SU6CGh4KHGh2cy5jcVZ6T01zQmxMNm0xZXcyTFgyQU1YNnU
+root
+```
 </script></section></section><section ><section data-markdown><script type="text/template">
 ### Templating policies
 
@@ -398,7 +449,7 @@ Dive deeper ↓
 </script></section><section data-markdown><script type="text/template">
 #### 1/5 Auth engines
 
-- Auth engines authenticate users and applications
+- Auth engines (or called [methods](https://developer.hashicorp.com/vault/docs/auth) nowadays) authenticate users and applications
 - Many different auth engines exist
 - We will cover the most common auth engines
 </script></section><section data-markdown><script type="text/template">
@@ -455,9 +506,6 @@ Dive deeper ↓
 - You can configure Vault using different approaches
 - [UI](https://developer.hashicorp.com/vault/tutorials/getting-started-ui) / [API](https://developer.hashicorp.com/vault/api-docs) / [CLI](https://developer.hashicorp.com/vault/docs/commands) / [Terraform](https://registry.terraform.io/providers/hashicorp/vault) / [Python](https://hvac.readthedocs.io/)
 - We will cover the CLI and Terraform approach
-</script></section><section  data-markdown><script type="text/template">
-### CLI
-
 </script></section><section ><section data-markdown><script type="text/template">
 ### CLI
 
