@@ -330,7 +330,7 @@ Dive deeper ↓
 
 > Policies are deny by default (no policy = no authorization)
 
-- Everything in Vault is path based (path corresponds to Vault API endpoints)
+- Everything in Vault is **path** based (**path** corresponds to Vault **API endpoints**)
 - Policies in Vault are written in HCL or JSON [syntax](https://developer.hashicorp.com/vault/docs/concepts/policies#policy-syntax)
 
 ```hcl
@@ -428,13 +428,23 @@ path "*" { # allow all paths (not valid HCL)
 
 ----
 
-#### 8/8 Writing policies - print token capabilities
+#### 8/8 Writing policies - reading policy and token capabilities
 
-> Usage: vault token capabilities [options] [token] path
+> vault token capabilities [flags] [token] [path]
 
 ```sh
-vault token capabilities hvs.CAESIPinkhdj8YEEzmOP4kxfSfJBZjl1--bbfvPVjB98SU6CGh4KHGh2cy5jcVZ6T01zQmxMNm0xZXcyTFgyQU1YNnU
+vault token capabilities hvs.CAESIPinkhdj8YEEzmOP4kxfSfJBZjl1--bbfvPVjB98SU6CGh4KHGh2cy5jcVZ6T01zQmx
 root
+```
+
+> vault policy read [policy]
+
+```
+(command output)
+path "auth/token/lookup-self" {
+    capabilities = ["read"]
+}
+(etc)
 ```
 
 ---
@@ -505,7 +515,7 @@ Dive deeper ↓
 
 #### 1/5 Auth engines
 
-- Auth engines (or called [methods](https://developer.hashicorp.com/vault/docs/auth) nowadays) authenticate users and applications
+- Auth engines/(or called [methods](https://developer.hashicorp.com/vault/docs/auth) nowadays) authenticate users and applications
 - Many different auth engines exist
 - We will cover the most common auth engines
 
@@ -526,7 +536,7 @@ Dive deeper ↓
 #### 3/5 Auth engines - userpass
 
 - Next up, the [userpass](https://developer.hashicorp.com/vault/docs/auth/userpass) auth engine
-- Simply allows you to use standard users (with passwords) in Vault
+- Simply allows you to use standard username/password combinations in Vault
 - Usually used as an emergency backup auth method (in case dynamic auth engine fails)
 
 ----
@@ -558,18 +568,40 @@ Dive deeper ↓
 
 ----
 
-#### 1/2 Secret engines (static)
+#### 1/ What are secret engines
 
-- Stores static data by using a key-value store
-- Think about username password combinations or API keys
-- Access control through policies
+- Components responsible for managing *secrets*
+- Distinguish between **static** and **dynamic** secrets engines
+  - **Static** secrets engines simply *store* and *read* data
+  - **Dynamic** secrets engines allows rotating credentials over time (through other services)
+- Specific features
+  - TOTP generation
+  - Encryption as a service (EaaS)
+  - Certificate generation
 
 ----
 
-#### 2/2 Secret engines (dynamic)
+#### 2/ Secret engines - KV Engine (static)
 
-- Dynamic secret engines in Vault allow rotating of credentials over time
-- Database credentials and cloud provider access keys
+- Stores static data by using a key-value store
+- Think about username password combinations or API keys
+- Access control configured through policies
+- Access is fully audited through the audit log
+- Two versions: key/value v2 (`kv-v2`) secrets engine is versioned, whereas v1 (`kv`) is not
+
+----
+
+#### 3/ Secret engines - Database (dynamic)
+
+- [Database](https://developer.hashicorp.com/vault/docs/secrets/databases) secrets engines generate database credentials dynamically (over time)
+- More automated rotation of credentials in the case of large environments
+
+----
+
+#### 4/ Secret engines - Cloud credentials (dynamic)
+
+- Dynamically create access credentials based on policies
+- Think about [AWS](https://developer.hashicorp.com/vault/docs/secrets/aws), [Azure](https://developer.hashicorp.com/vault/docs/secrets/azure) or [Google Cloud](https://developer.hashicorp.com/vault/docs/secrets/gcp)
 
 ---
 
@@ -581,6 +613,27 @@ Dive deeper ↓
 
 ---
 
+### UI
+
+How to configure Vault using the UI
+
+Dive deeper ↓
+
+----
+
+#### UI - configure KV secrets engine
+
+![Vault enable KV engine](https://raw.githubusercontent.com/adfinis/success-packages/master/assets/images/Vault-enable-kv-engine.png)
+
+----
+
+#### UI - Vault UI workshop
+
+- Start the Vault environment using `docker-compose` again
+- Enable the kv v2 secrets engine from within the UI
+
+---
+
 ### CLI
 
 How to configure Vault using the CLI
@@ -589,11 +642,73 @@ Dive deeper ↓
 
 ----
 
-#### 1/ CLI
+#### 1/ CLI - secrets engine
+
+- Secrets engines must be enabled at a **path** so that the request can be routed
+  - Each secrets engine defines its own **paths** and **properties**
 
 ----
 
-#### 2/ CLI
+#### 2/ CLI - secrets engine subcommands
+
+> vault secrets -h
+
+```yaml
+Usage: vault secrets <subcommand> [options] [args]
+
+  This command groups subcommands for interacting with Vault's secrets engines.
+  Each secret engine behaves differently. Please see the documentation for
+  more information.
+
+  List all enabled secrets engines:
+
+      $ vault secrets list
+
+  Enable a new secrets engine:
+
+      $ vault secrets enable database
+
+  Please see the individual subcommand help for detailed usage information.
+
+Subcommands:
+    disable    Disable a secret engine
+    enable     Enable a secrets engine
+    list       List enabled secrets engines
+    move       Move a secrets engine to a new path
+    tune       Tune a secrets engine configuration
+```
+
+----
+
+#### 3/ CLI - secrets engine tuning
+
+> vault secrets tune -h
+
+```yaml
+Usage: vault secrets tune [options] PATH
+
+  Tunes the configuration options for the secrets engine at the given PATH.
+  The argument corresponds to the PATH where the secrets engine is enabled,
+  not the TYPE!
+
+  Tune the default lease for the PKI secrets engine:
+
+      $ vault secrets tune -default-lease-ttl=72h pki/
+```
+
+----
+
+#### 4/ CLI - secrets engine workshop
+
+- Enable the kv secrets engine (v2) with the `random` path
+- Tune (configure) the secrets engine with a description `random description`
+
+----
+
+#### 5/ CLI - secrets engine workshop solution
+
+- `vault secrets enable -path=random -version=2 kv`
+- `vault secrets tune -description='random description' random`
 
 ---
 
