@@ -627,10 +627,24 @@ Dive deeper ↓
 
 ----
 
+#### UI - create kv engine secret
+
+![Vault enable KV engine](https://raw.githubusercontent.com/adfinis/success-packages/improvements/assets/images/Vault-create-secret.png)
+
+----
+
+#### UI - kv engine version history
+
+![Vault enable KV engine](https://raw.githubusercontent.com/adfinis/success-packages/improvements/assets/images/Vault-kv-version-history.png)
+
+----
+
 #### UI - Vault UI workshop
 
 - Start the Vault environment using `docker-compose` again
+- Login to Vault using `manual-root-token`
 - Enable the kv v2 secrets engine from within the UI
+- Tune the configuration values
 
 ---
 
