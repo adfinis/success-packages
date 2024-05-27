@@ -515,7 +515,7 @@ Dive deeper ↓
 
 #### 1/5 Auth engines
 
-- Auth engines/(or called [methods](https://developer.hashicorp.com/vault/docs/auth) nowadays) authenticate users and applications
+- Auth engines/(alternatively, called [methods](https://developer.hashicorp.com/vault/docs/auth) nowadays) authenticate users and applications
 - Many different auth engines exist
 - We will cover the most common auth engines
 
@@ -623,7 +623,7 @@ Dive deeper ↓
 
 #### UI - configure KV secrets engine
 
-![Vault enable KV engine](https://raw.githubusercontent.com/adfinis/success-packages/master/assets/images/Vault-enable-kv-engine.png)
+![Vault enable KV engine](https://raw.githubusercontent.com/adfinis/success-packages/improvements/assets/images/Vault-enable-kv-engine.png)
 
 ----
 
