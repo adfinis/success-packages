@@ -155,6 +155,25 @@ HA Enabled      false
 
 ---
 
+## Vault lab with docker-compose
+
+There are 3 different labs available, depending on your preference!
+
+Decide whether to keep, or throw away the Vault state on your local machine.
+
+| File name                            | Goal                                    |
+|--------------------------------------|-----------------------------------------|
+| docker-compose.yml                   | Community Vault running in dev mode     |
+| docker-compose-server.yml            | Community Vault running in server mode  |
+| docker-compose-enterprise.yml        | Enterprise Vault running in dev mode    |
+| docker-compose-enterprise-server.yml | Enterprise Vault running in server mode |
+
+Run the alternative docker-compose files by using the `-f` flag
+
+For example: `docker compose -f docker-compose-server.yml up`.
+
+---
+
 ## Token leases
 
 Vault token leases and expiration

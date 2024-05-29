@@ -2,7 +2,7 @@
 services:
   vault:
     image: hashicorp/vault:latest
-    container_name: vault-success-package-demo
+    container_name: vault-dev-mode
     cap_add:
       - IPC_LOCK
     command: server -dev
