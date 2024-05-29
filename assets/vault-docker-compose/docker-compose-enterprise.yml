@@ -1,13 +1,14 @@
 ---
 services:
   vault:
-    image: hashicorp/vault:latest
+    image: hashicorp/vault-enterprise:latest
     container_name: vault-success-package-demo
     cap_add:
       - IPC_LOCK
     command: server -dev
     environment:
       VAULT_DEV_ROOT_TOKEN_ID: manual-root-token
+      VAULT_LICENSE: $VAULT_LICENSE
     ports:
       - 8200:8200
       - 8201:8201
