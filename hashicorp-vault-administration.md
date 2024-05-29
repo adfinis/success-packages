@@ -715,7 +715,7 @@ Usage: vault secrets tune [options] PATH
 #### 4/ CLI - secrets engine workshop
 
 - Enable the kv secrets engine (v2) with the `random` path
-- Tune (configure) the secrets engine with a description `random description`
+- Tune (configure) the secrets engine with a `random description`
 
 ----
 
@@ -734,26 +734,49 @@ Dive deeper ↓
 
 ----
 
-#### 1/ Terraform - how to
+#### 1/ Terraform - benefits
+
+- The usual IaC benefits are also applicable here
+- Ensure consistency and repeatability in configuration changes
+- Version control for transparency and accountability (enabling tracking and auditing)
+- Keep all environments consistent (dev and prod)
+- Ability to undo all changes (`terraform destroy`)
+
+----
+
+#### 2/ Terraform - how to
 
 - In most cases, configure Vault using the Terraform [provider](https://registry.terraform.io/providers/hashicorp/vault/latest)
 - You can use Terraform [resources](https://developer.hashicorp.com/terraform/language/resources) as shown in the Vault provider [docs](https://registry.terraform.io/providers/hashicorp/vault/latest/docs) to apply configuration
 
 ----
 
-#### 2/ Terraform - benefits
+#### 3/ Terraform - practical tips
 
-- The usual IaC benefits are also applicable here
-- Ensure consistency and repeatability in configuration changes
-- Version control for transparency and accountability (enabling tracking and auditing)
-- Keep all environments consistent (dev and prod)
+- Configure the environment, not the actual static or dynamic secrets within Vault
+- In most cases you don't populate any actual secrets using Terraform
 
 ----
 
-#### 2/ Terraform - practical application
+#### 4/ Terraform - workshop
 
-- Configure the environment, not the actual contents of Vault
-- In most cases you don't populate any actual secrets using Terraform
+We are going to perform a workshop.
+
+- `cd assets/vault-docker-compose`
+- `docker-compose up -d`
+- `cd ../vault-terraform`
+- `tree`
+- `export VAULT_TOKEN=manual-root-token`
+- `export VAULT_ADDR=http://127.0.0.1:8200`
+- `terraform init`
+- `terraform apply`
+
+
+----
+
+#### 5/ Terraform - workshop solution
+
+
 
 ---
 
