@@ -146,6 +146,23 @@ Cluster Name    vault-cluster-9508bdb6
 Cluster ID      54f061c0-58c5-b5dc-6b56-e03c0e4f8771
 HA Enabled      false
 ```
+</script></section><section  data-markdown><script type="text/template">
+## Vault lab with docker-compose
+
+There are 3 different labs available, depending on your preference!
+
+Decide whether to keep, or throw away the Vault state on your local machine.
+
+| File name                            | Goal                                    |
+|--------------------------------------|-----------------------------------------|
+| docker-compose.yml                   | Community Vault running in dev mode     |
+| docker-compose-server.yml            | Community Vault running in server mode  |
+| docker-compose-enterprise.yml        | Enterprise Vault running in dev mode    |
+| docker-compose-enterprise-server.yml | Enterprise Vault running in server mode |
+
+Run the alternative docker-compose files by using the `-f` flag
+
+For example: `docker compose -f docker-compose-server.yml up`.
 </script></section><section ><section data-markdown><script type="text/template">
 ## Token leases
 
@@ -619,7 +636,7 @@ Usage: vault secrets tune [options] PATH
 #### 4/ CLI - secrets engine workshop
 
 - Enable the kv secrets engine (v2) with the `random` path
-- Tune (configure) the secrets engine with a description `random description`
+- Tune (configure) the secrets engine with a `random description`
 </script></section><section data-markdown><script type="text/template">
 #### 5/ CLI - secrets engine workshop solution
 
@@ -632,22 +649,41 @@ How to configure Vault using Terraform
 
 Dive deeper ↓
 </script></section><section data-markdown><script type="text/template">
-#### 1/ Terraform - how to
-
-- In most cases, configure Vault using the Terraform [provider](https://registry.terraform.io/providers/hashicorp/vault/latest)
-- You can use Terraform [resources](https://developer.hashicorp.com/terraform/language/resources) as shown in the Vault provider [docs](https://registry.terraform.io/providers/hashicorp/vault/latest/docs) to apply configuration
-</script></section><section data-markdown><script type="text/template">
-#### 2/ Terraform - benefits
+#### 1/ Terraform - benefits
 
 - The usual IaC benefits are also applicable here
 - Ensure consistency and repeatability in configuration changes
 - Version control for transparency and accountability (enabling tracking and auditing)
 - Keep all environments consistent (dev and prod)
+- Ability to undo all changes (`terraform destroy`)
 </script></section><section data-markdown><script type="text/template">
-#### 2/ Terraform - practical application
+#### 2/ Terraform - how to
 
-- Configure the environment, not the actual contents of Vault
+- In most cases, configure Vault using the Terraform [provider](https://registry.terraform.io/providers/hashicorp/vault/latest)
+- You can use Terraform [resources](https://developer.hashicorp.com/terraform/language/resources) as shown in the Vault provider [docs](https://registry.terraform.io/providers/hashicorp/vault/latest/docs) to apply configuration
+</script></section><section data-markdown><script type="text/template">
+#### 3/ Terraform - practical tips
+
+- Configure the environment, not the actual static or dynamic secrets within Vault
 - In most cases you don't populate any actual secrets using Terraform
+</script></section><section data-markdown><script type="text/template">
+#### 4/ Terraform - workshop
+
+We are going to perform a workshop.
+
+- `cd assets/vault-docker-compose`
+- `docker-compose up -d`
+- `cd ../vault-terraform`
+- `tree`
+- `export VAULT_TOKEN=manual-root-token`
+- `export VAULT_ADDR=http://127.0.0.1:8200`
+- `terraform init`
+- `terraform apply`
+
+</script></section><section data-markdown><script type="text/template">
+#### 5/ Terraform - workshop solution
+
+
 </script></section></section><section  data-markdown><script type="text/template">
 ## Questions
 
