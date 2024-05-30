@@ -7,7 +7,7 @@ services:
       - IPC_LOCK
     command: server
     volumes:
-      - ./docker/vault/data:/vault/file
+      - ./docker/vault/data:/vault/data
       - ./docker/vault/logs:/vault/logs
       - ./docker/vault/config:/vault/config
     environment:

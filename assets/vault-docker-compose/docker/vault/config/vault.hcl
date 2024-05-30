@@ -7,5 +7,5 @@ listener "tcp" {
 }
 
 storage "raft" {
-  path = "/vault/file"
+  path = "/vault/data"
 }

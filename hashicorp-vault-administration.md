@@ -157,9 +157,9 @@ HA Enabled      false
 
 ## Vault lab with docker-compose
 
-There are 3 different labs available, depending on your preference!
+There are 4 different compose files available, depending on your preference!
 
-Decide whether to keep, or throw away the Vault state on your local machine.
+Decide whether to keep or throw away the Vault state
 
 | File name                            | Goal                                    |
 |--------------------------------------|-----------------------------------------|
@@ -168,9 +168,9 @@ Decide whether to keep, or throw away the Vault state on your local machine.
 | docker-compose-enterprise.yml        | Enterprise Vault running in dev mode    |
 | docker-compose-enterprise-server.yml | Enterprise Vault running in server mode |
 
-Run the alternative docker-compose files by using the `-f` flag
+Run the alternative docker-compose files by using the `-f` flag, for example:
 
-For example: `docker compose -f docker-compose-server.yml up`.
+`docker compose -f docker-compose-server.yml up`
 
 ---
 
@@ -534,7 +534,7 @@ Dive deeper ↓
 
 #### 1/5 Auth engines
 
-- Auth engines/(alternatively, called [methods](https://developer.hashicorp.com/vault/docs/auth) nowadays) authenticate users and applications
+- Auth engines (or called [auth methods](https://developer.hashicorp.com/vault/docs/auth) nowadays) authenticate users and applications
 - Many different auth engines exist
 - We will cover the most common auth engines
 
@@ -587,7 +587,7 @@ Dive deeper ↓
 
 ----
 
-#### 1/ What are secret engines
+#### 1/4 What are secret engines
 
 - Components responsible for managing *secrets*
 - Distinguish between **static** and **dynamic** secrets engines
@@ -600,7 +600,7 @@ Dive deeper ↓
 
 ----
 
-#### 2/ Secret engines - KV Engine (static)
+#### 2/4 Secret engines - KV Engine (static)
 
 - Stores static data by using a key-value store
 - Think about username password combinations or API keys
@@ -610,14 +610,14 @@ Dive deeper ↓
 
 ----
 
-#### 3/ Secret engines - Database (dynamic)
+#### 3/4 Secret engines - Database (dynamic)
 
 - [Database](https://developer.hashicorp.com/vault/docs/secrets/databases) secrets engines generate database credentials dynamically (over time)
 - More automated rotation of credentials in the case of large environments
 
 ----
 
-#### 4/ Secret engines - Cloud credentials (dynamic)
+#### 4/4 Secret engines - Cloud credentials (dynamic)
 
 - Dynamically create access credentials based on policies
 - Think about [AWS](https://developer.hashicorp.com/vault/docs/secrets/aws), [Azure](https://developer.hashicorp.com/vault/docs/secrets/azure) or [Google Cloud](https://developer.hashicorp.com/vault/docs/secrets/gcp)
@@ -640,25 +640,25 @@ Dive deeper ↓
 
 ----
 
-#### UI - configure KV secrets engine
+#### UI 1/4 - configure KV secrets engine
 
 ![Vault enable KV engine](https://raw.githubusercontent.com/adfinis/success-packages/improvements/assets/images/Vault-enable-kv-engine.png)
 
 ----
 
-#### UI - create kv engine secret
+#### UI 2/4 - create kv engine secret
 
 ![Vault enable KV engine](https://raw.githubusercontent.com/adfinis/success-packages/improvements/assets/images/Vault-create-secret.png)
 
 ----
 
-#### UI - kv engine version history
+#### UI 3/4 - kv engine version history
 
 ![Vault enable KV engine](https://raw.githubusercontent.com/adfinis/success-packages/improvements/assets/images/Vault-kv-version-history.png)
 
 ----
 
-#### UI - Vault UI workshop
+#### UI 4/4 - Vault UI workshop
 
 - Start the Vault environment using `docker-compose` again
 - Login to Vault using `manual-root-token`
@@ -675,14 +675,14 @@ Dive deeper ↓
 
 ----
 
-#### 1/ CLI - secrets engine
+#### 1/5 CLI - secrets engine
 
 - Secrets engines must be enabled at a **path** so that the request can be routed
   - Each secrets engine defines its own **paths** and **properties**
 
 ----
 
-#### 2/ CLI - secrets engine subcommands
+#### 2/5 CLI - secrets engine subcommands
 
 > vault secrets -h
 
@@ -713,7 +713,7 @@ Subcommands:
 
 ----
 
-#### 3/ CLI - secrets engine tuning
+#### 3/5 CLI - secrets engine tuning
 
 > vault secrets tune -h
 
@@ -731,14 +731,14 @@ Usage: vault secrets tune [options] PATH
 
 ----
 
-#### 4/ CLI - secrets engine workshop
+#### 4/5 CLI - secrets engine workshop question
 
 - Enable the kv secrets engine (v2) with the `random` path
 - Tune (configure) the secrets engine with a `random description`
 
 ----
 
-#### 5/ CLI - secrets engine workshop solution
+#### 5/5 CLI - secrets engine workshop answer
 
 - `vault secrets enable -path=random -version=2 kv`
 - `vault secrets tune -description='random description' random`
@@ -753,7 +753,7 @@ Dive deeper ↓
 
 ----
 
-#### 1/ Terraform - benefits
+#### 1/10 Terraform - benefits
 
 - The usual IaC benefits are also applicable here
 - Ensure consistency and repeatability in configuration changes
@@ -763,39 +763,96 @@ Dive deeper ↓
 
 ----
 
-#### 2/ Terraform - how to
+#### 2/10 Terraform - how to
 
 - In most cases, configure Vault using the Terraform [provider](https://registry.terraform.io/providers/hashicorp/vault/latest)
 - You can use Terraform [resources](https://developer.hashicorp.com/terraform/language/resources) as shown in the Vault provider [docs](https://registry.terraform.io/providers/hashicorp/vault/latest/docs) to apply configuration
 
 ----
 
-#### 3/ Terraform - practical tips
+#### 3/10 Terraform - practical tips
 
 - Configure the environment, not the actual static or dynamic secrets within Vault
 - In most cases you don't populate any actual secrets using Terraform
 
 ----
 
-#### 4/ Terraform - workshop
+#### 4/10 Terraform - workshop - run server Vault
 
-We are going to perform a workshop.
-
+First tab:
 - `cd assets/vault-docker-compose`
-- `docker-compose up -d`
-- `cd ../vault-terraform`
-- `tree`
-- `export VAULT_TOKEN=manual-root-token`
-- `export VAULT_ADDR=http://127.0.0.1:8200`
-- `terraform init`
-- `terraform apply`
+- `docker-compose -f docker-compose-server.yml up`
 
+Second tab:
+- `export VAULT_ADDR="http://127.0.0.1:8200"`
+- `vault operator init -key-shares=1 -key-threshold=1`
+- `vault operator unseal`
 
 ----
 
-#### 5/ Terraform - workshop solution
+#### 5/10 Terraform - workshop - terraform
 
+Second tab:
+- `cd ../vault-terraform`
+- `tree`
+- `export VAULT_TOKEN=<fill-root-token-from-vault-operator-init>`
+- `export VAULT_ADDR="http://127.0.0.1:8200"`
+- `terraform init`
+- `terraform apply`
 
+----
+
+#### 6/10 Terraform - workshop
+
+- Inspect all code and comments in the `assets/vault-terraform` directory
+- Navigate and inspect the following inside of the Vault UI: 
+  - the `admins` policy
+  - the `userpass` auth method
+  - the `student` user within the `userpass` auth method
+  - the `kv-v2` secrets engine
+
+----
+
+#### 7/10 Terraform - workshop
+
+- Identify the terraform resource `vault_audit` in the Vault [provider](https://registry.terraform.io/providers/hashicorp/vault/latest)
+- Configure the audit log by using the `vault_audit` resource and path `/vault/logs/audit.log` (place the Terraform code in `assets/vault-terraform/audit.tf`)
+- Enable your changes:
+  - `terraform plan`
+  - `terraform apply`
+
+----
+
+#### 8/10 Terraform - workshop
+
+File code:
+```
+resource "vault_audit" "file" {
+  type = "file"
+  options = {
+    file_path = "/vault/logs/audit.log"
+  }
+}
+```
+
+----
+
+#### 9/10 Terraform - workshop - inspect audit log
+
+- Open: `assets/vault-docker-compose/docker/vault/logs/audit.log`
+- Refer to this [guide](https://support.hashicorp.com/hc/en-us/articles/360000995548-Audit-and-Operational-Log-Details) for an explanation on all the fields reported within the audit logs
+
+----
+
+#### 9/10 Terraform - workshop - cleanup
+
+- To destroy the Terraform configuration:
+  - `terraform destroy`
+- To remove the Vault server data:
+  - `cd success-packages/asssets/vault-docker-compose`
+  - `rm -R docker/vault/data/*`
+- To unset the environment variables from your terminal:
+  - `unset VAULT_TOKEN VAULT_ADDR`
 
 ---
 
