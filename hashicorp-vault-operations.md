@@ -1,6 +1,7 @@
 ---
 title: Vault operations
-
+theme: night
+css: reveal-md/css/custom-night.css
 ---
 
 # Vault operations
@@ -30,7 +31,7 @@ This presentation guides you through the Vault operations you may need to do to 
 
 ----
 
-## Topics 1/2
+## Topics 2/2
 
 - Disaster Recovery
 - Performance Replication
@@ -72,7 +73,7 @@ Supported architectures: `arm`, `arm64`, `386` and `amd64` .
 
 ## Installing 3/4
 
-When using a binary, there are a few thinks that need to be done to a system:
+When using a binary, there are a few things that need to be created in a system:
 
 - Create directories
 - Create a configuration
@@ -84,7 +85,7 @@ When using a binary, there are a few thinks that need to be done to a system:
 
 ## Installing 4/4
 
-Rather than a binary, a package can also be installed:
+Rather than manually using the binary, a package can also be installed:
 
 - Debian-like: https://apt.releases.hashicorp.com
 - RedHat-like: https://rpm.releases.hashicorp.com
@@ -220,7 +221,7 @@ Any Vault node or cluster needs to be initialized. Initializing created an encry
 
 Unseal/recovery keys can be PGP can be used to prevent plain-text (shared) keys to be displayed.
 
-It's adviced to carefully run this procedure.
+It's advised to carefully run this procedure.
 
 ----
 
@@ -230,13 +231,13 @@ The "root-token" or "root-key" is the initial key that allows all actions on Vau
 
 This token should be revoked as early as possible, after personal users have "high privileged" access to Vault.
 
-NOTE: Most Vault installations have the root-token **NOT** revoked, which is a serurity issue.
+NOTE: Most Vault installations have the root-token **NOT** revoked, which is a security issue.
 
 ---
 
 ## Unsealing 1/6
 
-Every time Vault starts, it needs to be unseal. These are typical situations when unsealing is required:
+Every time Vault starts, it needs to be unsealed. These are typical situations when unsealing is required:
 
 - Reboot
 - Restart
@@ -251,13 +252,13 @@ Manual unsealing requires unsealing as many times as the amount of `key-threshol
 
 This means at least 3 people need to enter an unseal key on **each Vault instance**. A typical installation of Vault has  10 to 20 nodes. That would mean 30 to 60 unseal commands.
 
-Manaul unsealing is not preferred.
+Manual unsealing is not preferred.
 
 ---
 
 ## Unsealing 3/6
 
-You can have Vault unseal automatically in a few way.
+You can automatically unseal Vault in multiple ways.
 
 - AWS KMS
 - Azure Key Vault
@@ -295,8 +296,8 @@ Vault clusters (or instances) can be related in a "disaster recovery" replicatio
 
 ## Disaster Recovery 2/3
 
-- Syncronizes all data.
-- Has a primary and secondary
+- Synchronizes all data.
+- Has a primary and secondary.
 - Secondary can be promoted.
 - Secondary does not provide service until promoted.
 - Is an Enterprise feature.
@@ -313,11 +314,11 @@ Disaster Recovery can also be used to migrate from one cluster to another.
 
 ## Performance Replication 1/2
 
-Vault clusters can syncronize (selected) data in a "performance replication" setup.
+Vault clusters can synchronize (selected) data in a "performance replication" setup.
 
 Performance Replication:
 
-- Syncronizes selected data.
+- Synchronizes selected data.
 - Has a primary and secondary
 - Secondary can be promoted.
 - Secondary does provide service.

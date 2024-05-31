@@ -30,8 +30,8 @@ listener "tcp" {
 }
 
 template_config {
-   static_secret_render_interval = "10s"
-   exit_on_retry_failure         = true
+  static_secret_render_interval = "10s"
+  exit_on_retry_failure         = true
 }
 
 template {
