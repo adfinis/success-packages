@@ -14,6 +14,17 @@ HashiCorp Vault Administration
 
 ---
 
+## Pull down this repository
+
+Before the presentation starts: 
+
+1. Pull down this repository: `git clone https://github.com/adfinis/success-packages.git`
+2. Make sure `docker` is installed (as we're going to need `docker compose`)
+
+The presentation can also be viewed [online](https://adfinis.github.io/success-packages/hashicorp-vault-administration/#/)
+
+---
+
 ## Topics 1/2
 
 - Tokens
@@ -231,6 +242,10 @@ token_policies       ["default"]
 identity_policies    []
 policies             ["default"]
 ```
+
+Note:
+- you may go ahead and do this yourself
+
 ----
 
 #### 4/7 Token leases - batch token limitations
@@ -293,6 +308,9 @@ path "auth/token/create-orphan" {
   capabilities = [ "create", "read", "update", "delete", "sudo" ]
 }
 ```
+
+Note:
+- in practice not really used, but good to know it's out there
 
 ----
 
@@ -543,7 +561,7 @@ Dive deeper ↓
 #### 2/5 Auth engines - token
 
 - The [token](https://developer.hashicorp.com/vault/docs/auth/token) auth method is the most basic engine
-- Built-in, automatically available by default at `/auth/token`
+- [Built-in](http://127.0.0.1:8200/ui/vault/access/token/configuration), automatically available by default at `/auth/token`
 - Allows users to:
   - authenticate using a token
   - create new tokens
@@ -555,8 +573,12 @@ Dive deeper ↓
 #### 3/5 Auth engines - userpass
 
 - Next up, the [userpass](https://developer.hashicorp.com/vault/docs/auth/userpass) auth engine
+- The only engine in Vault that allows you to add custom usernames/password combinations
 - Simply allows you to use standard username/password combinations in Vault
 - Usually used as an emergency backup auth method (in case dynamic auth engine fails)
+
+Note:
+- all other auth engines hook into other systems where it pulls user/pass information from
 
 ----
 
@@ -613,7 +635,10 @@ Dive deeper ↓
 #### 3/4 Secret engines - Database (dynamic)
 
 - [Database](https://developer.hashicorp.com/vault/docs/secrets/databases) secrets engines generate database credentials dynamically (over time)
-- More automated rotation of credentials in the case of large environments
+- Automated rotation of credentials in the case of large environments
+
+Note:
+- useful to automate rotation in the case of many clients
 
 ----
 
@@ -621,6 +646,9 @@ Dive deeper ↓
 
 - Dynamically create access credentials based on policies
 - Think about [AWS](https://developer.hashicorp.com/vault/docs/secrets/aws), [Azure](https://developer.hashicorp.com/vault/docs/secrets/azure) or [Google Cloud](https://developer.hashicorp.com/vault/docs/secrets/gcp)
+
+Note:
+- this is especially useful for pipelines that need a limited permissions and temporary credentials
 
 ---
 
@@ -660,10 +688,10 @@ Dive deeper ↓
 
 #### UI 4/4 - Vault UI workshop
 
-- Start the Vault environment using `docker-compose` again
-- Login to Vault using `manual-root-token`
-- Enable the kv v2 secrets engine from within the UI
-- Tune the configuration values
+1. Start the Vault environment using `docker-compose` again
+2. Login to Vault using `manual-root-token`
+3. Enable the kv v2 secrets engine from within the UI
+4. Tune the configuration values
 
 ---
 
@@ -733,15 +761,15 @@ Usage: vault secrets tune [options] PATH
 
 #### 4/5 CLI - secrets engine workshop question
 
-- Enable the kv secrets engine (v2) with the `random` path
-- Tune (configure) the secrets engine with a `random description`
+1. Enable the kv secrets engine (v2) with the `random` path
+2. Tune (configure) the secrets engine with a `random description`
 
 ----
 
 #### 5/5 CLI - secrets engine workshop answer
 
-- `vault secrets enable -path=random -version=2 kv`
-- `vault secrets tune -description='random description' random`
+1. `vault secrets enable -path=random -version=2 kv`
+2. `vault secrets tune -description='random description' random`
 
 ---
 
@@ -780,25 +808,25 @@ Dive deeper ↓
 #### 4/10 Terraform - workshop - run server Vault
 
 First tab:
-- `cd assets/vault-docker-compose`
-- `docker-compose -f docker-compose-server.yml up`
+1. `cd assets/vault-docker-compose`
+2. `docker-compose -f docker-compose-server.yml up`
 
 Second tab:
-- `export VAULT_ADDR="http://127.0.0.1:8200"`
-- `vault operator init -key-shares=1 -key-threshold=1`
-- `vault operator unseal`
+3. `export VAULT_ADDR="http://127.0.0.1:8200"`
+4. `vault operator init -key-shares=1 -key-threshold=1`
+5. `vault operator unseal`
 
 ----
 
 #### 5/10 Terraform - workshop - terraform
 
 Second tab:
-- `cd ../vault-terraform`
-- `tree`
-- `export VAULT_TOKEN=<fill-root-token-from-vault-operator-init>`
-- `export VAULT_ADDR="http://127.0.0.1:8200"`
-- `terraform init`
-- `terraform apply`
+6. `cd ../vault-terraform`
+7. `tree`
+8. `export VAULT_TOKEN=<fill-root-token-from-vault-operator-init>`
+9. `export VAULT_ADDR="http://127.0.0.1:8200"`
+10. `terraform init`
+11. `terraform apply`
 
 ----
 
@@ -844,7 +872,7 @@ resource "vault_audit" "file" {
 
 ----
 
-#### 9/10 Terraform - workshop - cleanup
+#### 10/10 Terraform - workshop - cleanup
 
 - To destroy the Terraform configuration:
   - `terraform destroy`
