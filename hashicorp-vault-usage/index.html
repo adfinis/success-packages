@@ -8,10 +8,9 @@
     <link rel="shortcut icon" href="./favicon.ico" />
     <link rel="stylesheet" href="./dist/reset.css" />
     <link rel="stylesheet" href="./dist/reveal.css" />
-    <link rel="stylesheet" href="./dist/theme/night.css" id="theme" />
+    <link rel="stylesheet" href="./dist/theme/black.css" id="theme" />
     <link rel="stylesheet" href="./css/highlight/base16/zenburn.css" />
 
-    <link rel="stylesheet" href="./reveal-md/reveal-md/css/custom-night.css" />
 
   </head>
   <body>
@@ -74,7 +73,7 @@ For each method (UI, CLI, API) we will:
 </script></section></section><section ><section data-markdown><script type="text/template">
 ## Vault UI 1/4
 
-User friendly, not all features are available.
+Userfriendly, not all features are available.
 </script></section><section data-markdown><script type="text/template">
 ## Vault UI 2/4
 
@@ -199,7 +198,7 @@ curl \
 ## Authentication
 
 1. Login using a method (approle, userpass, etc.)
-2. Retrieve a token.
+2. Retreive a token.
 3. Use the token to access Vault.
 </script></section><section ><section data-markdown><script type="text/template">
 ## Vault agent
@@ -231,7 +230,7 @@ There are [libraries](https://developer.hashicorp.com/vault/api-docs/libraries) 
         ANSIBLE_HASHI_VAULT_TOKEN: "{{ vault_token }}"
 ```
 
-> See [demo](https://github.com/adfinis/success-packages/tree/master/assets/vault-ansible-sdk)
+> See [demo](https://github.com/adfinis/success-packages/tree/master/assets-ansible-sdk)
 </script></section></section><section  data-markdown><script type="text/template">
 ## Questions
 </script></section><section  data-markdown><script type="text/template">
@@ -267,7 +266,6 @@ There are [libraries](https://developer.hashicorp.com/vault/api-docs/libraries) 
         history: true,
         center: true,
         transition: 'default', // none/fade/slide/convex/concave/zoom
-        slideNumber: true,
         plugins: [
           RevealMarkdown,
           RevealHighlight,
