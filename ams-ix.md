@@ -19,7 +19,7 @@ title: Ansible @ AMS-IX
 
 ## Automate everything
 
-Besides "normal" use-cases (playbooks, roles & collections):
+Besides "normal" use-cases (playbooks & roles):
 
 - [Document generation](https://github.com/robertdebock/ansible-generator)
 - [Retry CI](https://github.com/robertdebock/ci-retry)
@@ -31,7 +31,7 @@ Besides "normal" use-cases (playbooks, roles & collections):
 
 ## Ansible for OS variations
 
-Ansible is great at writing simple code to solve OS variations.
+Ansible is great at writing to solve OS variations.
 
 For example: `httpd` is different on each OS:
 
@@ -55,7 +55,8 @@ _httpd_packages:
   Debian:
     - apache2
 
-httpd_package: "{{ _httpd_packages[ansible_os_family] | default(_httpd_packages['default'] }}"
+httpd_package: "{{ _httpd_packages[ansible_os_family] | \
+  default(_httpd_packages['default'] }}"
 
 ----
 
@@ -150,6 +151,17 @@ Event Driven Ansible (EDA) reacts to events, and calls Ansible Automation Contro
 ---
 
 ## API for AMS-IX
+
+AAP does offer an [API](https://docs.ansible.com/automation-controller/latest/html/controllerapi/api_ref.html#) to integrate AAP in an orchestrator or workflow.
+
+My feeling is that AMS-IX want to expose network related API details, such as:
+
+- Network lists
+- Network details
+- IP ranges
+- Traffic details
+
+Ansible Automation Platform would be hard to fit this requirement.
 
 ---
 
