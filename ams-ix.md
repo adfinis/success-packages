@@ -7,6 +7,20 @@ title: Ansible @ AMS-IX
 
 ---
 
+## Adfinis
+
+- .ch: RedHat Premium partner
+- .nl: HashiCorp EMEA Focus partner of the year 2023
+- .nl: GitLab Services Partner of the year 2023 for EMEA
+
+Open Source knowledge center.
+
+---
+
+## Who are you/we?
+
+---
+
 ## Overview
 
 - Automate everything
@@ -153,6 +167,10 @@ Event Driven Ansible (EDA) reacts to events, and calls Ansible Automation Contro
 
 AAP does offer an [API](https://docs.ansible.com/automation-controller/latest/html/controllerapi/api_ref.html#) to integrate AAP in an orchestrator or workflow.
 
+----
+
+## Assumptions
+
 My feeling is that AMS-IX want to expose network related API details, such as:
 
 - Network lists
@@ -165,6 +183,10 @@ Ansible Automation Platform would be hard to fit this requirement.
 ---
 
 ## Conclusion
+
+1. Ansile: Automate everyting
+2. AAP/EDA: Easily run Ansible
+3. GitLab: Develop and test
 
 ---
 
