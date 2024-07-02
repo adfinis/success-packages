@@ -87,7 +87,6 @@ Testing, releasing and deploying can be done using GitLab (or GitHub).
 ## GitLab Testing
 
 ```yaml
----
 image: "robertdebock/github-action-molecule:6.0.1"
 
 molecule:
@@ -108,7 +107,6 @@ molecule:
 ## GitLab releasing
 
 ```yaml
----
 image: "robertdebock/github-action-molecule:6.0.1"
 
 galaxy:
