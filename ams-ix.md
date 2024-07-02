@@ -78,7 +78,7 @@ httpd_package: "{{ _httpd_packages[ansible_os_family] | \
 
 ---
 
-## GitLab CI.
+## GitLab CI
 
 Testing, releasing and deploying can be done using GitLab (or GitHub).
 
