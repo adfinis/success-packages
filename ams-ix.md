@@ -120,14 +120,15 @@ galaxy:
 
 ## GitLab deploying
 
-Likely better using Ansible Automation Platform because:
+Better using Ansible Automation Platform because:
 
 - RBAC
 - More readable output
 - Execution environment
 - Scheduling
+- Queueing
 
-> Possible with GitLab, but: build yourself.
+> GitLab, build yourself.
 
 ---
 
@@ -139,8 +140,8 @@ Event Driven Ansible (EDA) reacts to events, and calls Ansible Automation Contro
 +--- source ---+      +--- EDA ---+      +--- AAC ---+
 | - monitoring | <--- | runbooks  | ---> |           |
 | - event bus  |      +-----------+      +-----------+
-+--------------+                               |
-                                               V
+| - ...        |                               |
++--------------+                               V
                                        +--- targets ---+
                                        |               |
                                        +---------------+
