@@ -1,0 +1,25 @@
+---
+services:
+  vault:
+    image: hashicorp/vault-enterprise:latest
+    container_name: vault-enterprise-server-mode
+    cap_add:
+      - IPC_LOCK
+    command: server -dev
+    volumes:
+      - ./docker/vault/data:/vault/file
+      - ./docker/vault/logs:/vault/logs
+      - ./docker/vault/config:/vault/config
+    environment:
+      VAULT_ADDR: http://127.0.0.1:8200
+      VAULT_API_ADDR: http://vault:8200
+      VAULT_CLUSTER_ADDR: http://vault:8201
+      VAULT_LICENSE: $VAULT_LICENSE
+    ports:
+      - 8200:8200
+      - 8201:8201
+    networks:
+      vault:
+
+networks:
+  vault:

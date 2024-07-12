@@ -1,3 +1,9 @@
+---
+title: Index page
+theme: night
+css: reveal-md/css/custom-night.css
+---
+
 # Success packages
 
 This is the content to the [Adfinis](https://adfinis.com/) success packages.
