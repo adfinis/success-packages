@@ -1,6 +1,7 @@
 ---
 title: Vault usage
-
+theme: night
+css: reveal-md/css/custom-night.css
 ---
 
 # Vault usage
@@ -77,7 +78,7 @@ For each method (UI, CLI, API) we will:
 
 ## Vault UI 1/4
 
-Userfriendly, not all features are available.
+User friendly, not all features are available.
 
 ----
 
@@ -226,7 +227,7 @@ curl \
 ## Authentication
 
 1. Login using a method (approle, userpass, etc.)
-2. Retreive a token.
+2. Retrieve a token.
 3. Use the token to access Vault.
 
 ---
@@ -266,7 +267,7 @@ There are [libraries](https://developer.hashicorp.com/vault/api-docs/libraries) 
         ANSIBLE_HASHI_VAULT_TOKEN: "{{ vault_token }}"
 ```
 
-> See [demo](https://github.com/adfinis/success-packages/tree/master/assets-ansible-sdk)
+> See [demo](https://github.com/adfinis/success-packages/tree/master/assets/vault-ansible-sdk)
 
 ---
 

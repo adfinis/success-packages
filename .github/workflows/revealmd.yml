@@ -1,9 +1,9 @@
---- 
+---
 name: build and deploy revealmd presentation
 
 on:
   push:
-    branches: [master]
+    branches: [master, improvements]
 
 jobs:
   build-and-deploy:
@@ -16,8 +16,8 @@ jobs:
       - name: install and build
         run: |
           npm update
-          npm install --include=optional --location=global reveal-md@5.3.4
-          for file in *.md ; do /usr/local/bin/reveal-md --static output/"${file%.*}" "${file}" ; done
+          npm install --include=optional --location=global reveal-md@5.5.2
+          for file in *.md ; do /usr/local/bin/reveal-md --static output/"${file%.*}" --assets-dir reveal-md -css reveal-md/css/*.css "${file}" ; done
       - name: deploy
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:

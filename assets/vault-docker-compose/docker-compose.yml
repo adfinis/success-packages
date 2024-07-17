@@ -1,0 +1,18 @@
+---
+services:
+  vault:
+    image: hashicorp/vault:latest
+    container_name: vault-dev-mode
+    cap_add:
+      - IPC_LOCK
+    command: server -dev
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: manual-root-token
+    ports:
+      - 8200:8200
+      - 8201:8201
+    networks:
+      vault:
+
+networks:
+  vault:
